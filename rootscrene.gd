@@ -6,28 +6,42 @@ var allscore = 0
 var oldscore = 0
 var samecount = 0
 
-func random_choice():
-	return nodes[randi() % nodes.size()]
+func random_choice(x):
+	var goodchoice = false
+	var choice = 0
+	while not goodchoice:
+		choice = randi() % nodes.size()
+		if nodes[choice].rootstart:
+			goodchoice = true
+	
+	return choice
 	
 func random_connect():
 	var found
 	var node
+	nodes.shuffle()
 	for x in nodes:
-		found = false
-		while not found:
-			node = random_choice()
-			if node != x and node.position.distance_to(x.position) < 300:
-				x.add_neighbor(node)
-				node.add_neighbor(x)
-				found = true
+		
+		var newindex = random_choice(x)
+
+		if newindex <= nodes.size()-1 :
+
+			x.add_neighbor(nodes[newindex])
+			nodes[newindex].add_neighbor(x)
+			nodes[newindex].rootstart = true
+			x.rootstart = true
+
 
 func _ready():
 	set_process(true)
 	for x in 20:
 		nodes.append(scene.instance())
+	
+	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
 		self.add_child(x)
+		
 	random_connect()
 
 func _process(delta):
@@ -46,13 +60,9 @@ func _process(delta):
 	if oldscore == allscore:
 		samecount += 1
 	
-	if samecount > 200:
-		getgroups()
-	
 	oldscore = allscore
 	allscore = 0
 	
 
-func getgroups():
-	pass
+
 

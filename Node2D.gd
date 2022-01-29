@@ -15,10 +15,11 @@ var discovered = false
 var center = Vector2(0,0)
 var avgcenter
 var score = 1
+var rootstart = false
 
 func _ready():
 	randomize()
-	self.position = Vector2(randi() % 1000, randi() % 600)
+	self.position = Vector2((randi() % 10)*100, (randi() % 6)*100)
 	set_process(true)
 
 
@@ -36,10 +37,12 @@ func _process(delta):
 		var distance = self.position.distance_to(x.position)
 		if distance > 250:
 			score += 1
+			x.score += 1
 			position = position.move_toward(x.position, delta * (distance + speed))
 
-	if score > 100 and neighbors.size() == 1:
-		
+	if score > 40 and neighbors.size() == 1:
+#		score = 0
+#		self.position =  neighbors[0].position - self.position 
 		remove_neighbors()
 		allballs.erase(self)
 		queue_free()
