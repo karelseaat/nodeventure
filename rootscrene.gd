@@ -5,47 +5,52 @@ var nodes = []
 var allscore = 0
 var oldscore = 0
 var samecount = 0
+var balls = 30
+var current
 
-func random_choice(x):
+func random_choice(x, smal):
 	var goodchoice = false
 	var choice = 0
 	while not goodchoice:
 		choice = randi() % nodes.size()
-		if nodes[choice].rootstart:
+		if nodes[choice].rootstart and nodes[choice].neighbors.size() < smal:
 			goodchoice = true
 	
 	return choice
 	
-func random_connect():
-	var found
-	var node
-	nodes.shuffle()
-	for x in nodes:
-		
-		var newindex = random_choice(x)
+func random_connect(x, small):
 
-		if newindex <= nodes.size()-1 :
+	var newindex = random_choice(x, small)
+	if newindex <= nodes.size()-1:
 
-			x.add_neighbor(nodes[newindex])
-			nodes[newindex].add_neighbor(x)
-			nodes[newindex].rootstart = true
-			x.rootstart = true
+		x.add_neighbor(nodes[newindex])
+		nodes[newindex].add_neighbor(x)
+		if x.startatpos:
+			x.position = nodes[newindex].position +  Vector2( ((randi() % 5)-2.5) * 10, ((randi() % 5)-2.5)*10)
+		nodes[newindex].rootstart = true
+		x.rootstart = true
+		x.score = 0
+		nodes[newindex].score = 0 
 
+func setcur(curr):
+	current = curr
 
 func _ready():
 	set_process(true)
-	for x in 20:
+	for x in balls:
 		nodes.append(scene.instance())
 	
 	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
 		self.add_child(x)
-		
-	random_connect()
+
+	for x in nodes:
+		random_connect(x, 3)
 
 func _process(delta):
 	var totalcenter = Vector2()
+	
 	for x in nodes:
 		totalcenter += x.position
 		
@@ -53,6 +58,14 @@ func _process(delta):
 		x.avgcenter = totalcenter/ nodes.size()
 	
 	nodes.shuffle()
+	
+	if nodes.size() < balls:
+		nodes.append(scene.instance())
+		nodes[-1].allballs = nodes
+		nodes[-1].startatpos = true
+		self.add_child(nodes[-1])
+		random_connect(nodes[-1], 2)
+
 	
 	for x in nodes:
 		allscore += x.score
@@ -62,6 +75,7 @@ func _process(delta):
 	
 	oldscore = allscore
 	allscore = 0
+	
 	
 
 

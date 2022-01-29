@@ -16,43 +16,49 @@ var center = Vector2(0,0)
 var avgcenter
 var score = 1
 var rootstart = false
+var startatpos = false
 
 func _ready():
 	randomize()
-	self.position = Vector2((randi() % 10)*100, (randi() % 6)*100)
+	if not startatpos:
+		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
 
-
-
-
 func _process(delta):
-	var speed = 1
+	var speed = 5
 	
 	for x in allballs:
 		var distance = self.position.distance_to(x.position)
-		if distance < 150:
+		if distance < 250:
 			position -= position.direction_to(x.position) * (distance + speed)  * delta
 
 	for x in neighbors:
 		var distance = self.position.distance_to(x.position)
-		if distance > 250:
+		if distance > 350:
 			score += 1
-			x.score += 1
+
 			position = position.move_toward(x.position, delta * (distance + speed))
 
-	if score > 40 and neighbors.size() == 1:
-#		score = 0
-#		self.position =  neighbors[0].position - self.position 
+	if score > 15 and neighbors.size() <= 2:
+
 		remove_neighbors()
 		allballs.erase(self)
 		queue_free()
-
 	update()
 
 func remove_neighbors():
 	for x in neighbors:
 		x.neighbors.erase(self)
-	
+		
+	if neighbors.size() == 2 :
+		neighbors[0].neighbors.append(neighbors[1])
+		neighbors[1].neighbors.append(neighbors[0])
+
+	if neighbors.size() == 3 :
+		neighbors[0].neighbors.append(neighbors[1])
+		neighbors[1].neighbors.append(neighbors[2])
+		neighbors[2].neighbors.append(neighbors[0])
+
 
 func add_neighbor(node):
 	neighbors.append(node)
