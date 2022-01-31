@@ -75,8 +75,7 @@ func _process(delta):
 	
 	oldscore = allscore
 	allscore = 0
-	
-	
+
 
 
 

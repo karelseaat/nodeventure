@@ -7,11 +7,11 @@ var water = false
 var food = false
 var map  : Array = []
 var envstory = ""
-var enemy
+var enemy = false
 var exit = false
 var person
 var environment
-var discovered = false
+var discovered = true
 var center = Vector2(0,0)
 var avgcenter
 var score = 1
@@ -23,6 +23,9 @@ func _ready():
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
+	self.food = (randi() % 3) > 1
+	self.water = (randi() % 3) > 1
+	self.enemy = (randi() % 5) > 3
 
 func _process(delta):
 	var speed = 5
@@ -39,7 +42,7 @@ func _process(delta):
 
 			position = position.move_toward(x.position, delta * (distance + speed))
 
-	if score > 15 and neighbors.size() <= 2:
+	if score > 23 and neighbors.size() <= 2:
 
 		remove_neighbors()
 		allballs.erase(self)
@@ -49,7 +52,7 @@ func _process(delta):
 func remove_neighbors():
 	for x in neighbors:
 		x.neighbors.erase(self)
-		
+
 	if neighbors.size() == 2 :
 		neighbors[0].neighbors.append(neighbors[1])
 		neighbors[1].neighbors.append(neighbors[0])
@@ -58,7 +61,6 @@ func remove_neighbors():
 		neighbors[0].neighbors.append(neighbors[1])
 		neighbors[1].neighbors.append(neighbors[2])
 		neighbors[2].neighbors.append(neighbors[0])
-
 
 func add_neighbor(node):
 	neighbors.append(node)
@@ -88,25 +90,46 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width+3)
 
 func _draw():
-	draw_parts()
-	draw_connections()
+	if self.discovered:
+		draw_connections()
+		draw_parts()
 
 func draw_connections():
-	var color = Color(0, 0, 0, 1)
+	var color = Color(0, 0, 0, 0.1)
 	for x in neighbors:
-		draw_line(Vector2(0,0), x.transform[2] -  self.transform[2], color, 3)
+		var dist = x.transform[2].distance_to(self.transform[2]) - 80
+		var angle = x.transform[2].angle_to_point(self.transform[2])
+		var klont2 = Vector2(cos(angle), sin(angle)) * dist
+		draw_line(Vector2(0,0), klont2, color, 3)
 
 func draw_parts():
 
 	var offset1 = Vector2(-50,   -100)
-	var offset2 = Vector2(50,  -100)
-	var offset3 = Vector2(0,  -110)
+	var offset3 = Vector2(50,  -100)
+	var offset2 = Vector2(0,  -110)
 	var radius = 80
 	var angle_from = 0
 	var angle_to = 360
-	var color = Color(0.1, 0.1, 0.1, 0.1)
-	draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to, color, 1)
+	var colordark = Color(0.1, 0.1, 0.1, 1)
+	var color = Color(0.4, 0.4, 0.4, 1)
+	var watercolor = Color(0, 0.5, 1, 1)
+	var foodcolor = Color(0.5, 0.5, 0.2 ,1)
+	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
+
+	draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 	draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
-	draw_circle_arc(offset1, 15, angle_from, angle_to, color, 1)
-	draw_circle_arc(offset2, 15, angle_from, angle_to, color, 1)
-	draw_circle_arc(offset3, 15, angle_from, angle_to, color, 1)
+
+	draw_ball(offset1, 20, angle_from, angle_to, colordark)
+	draw_ball(offset1, 15, angle_from, angle_to, color)
+	if self.water:
+		draw_ball(offset1, 15, angle_from, angle_to, watercolor)
+		
+	draw_ball(offset2, 20, angle_from, angle_to, colordark)
+	draw_ball(offset2, 15, angle_from, angle_to, color)
+	if self.food:
+		draw_ball(offset2, 15, angle_from, angle_to, foodcolor)
+		
+	draw_ball(offset3, 20, angle_from, angle_to, colordark)
+	draw_ball(offset3, 15, angle_from, angle_to, color)
+	if self.enemy:
+		draw_ball(offset3, 15, angle_from, angle_to, enemycolor)
