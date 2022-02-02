@@ -9,7 +9,7 @@ var map  : Array = []
 var envstory = ""
 var enemy = false
 var exit = false
-var person
+var player
 var environment
 var discovered = true
 var center = Vector2(0,0)
@@ -93,6 +93,12 @@ func _draw():
 	if self.discovered:
 		draw_connections()
 		draw_parts()
+		draw_player()
+
+func draw_player():
+	if player:
+		var somecolor = Color(0.9, 0.9, 0.9, 1)
+		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
 func draw_connections():
 	var color = Color(0, 0, 0, 0.1)
@@ -133,3 +139,12 @@ func draw_parts():
 	draw_ball(offset3, 15, angle_from, angle_to, color)
 	if self.enemy:
 		draw_ball(offset3, 15, angle_from, angle_to, enemycolor)
+
+func setplayer(player):
+	self.player = player
+
+func moveplayer():
+	for x in neighbors:
+		if x.player:
+			self.player = x.player
+			x.player = null

@@ -7,6 +7,8 @@ var oldscore = 0
 var samecount = 0
 var balls = 30
 var current
+var simulationdone = false
+var player = preload("res://player.tscn")
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -76,6 +78,16 @@ func _process(delta):
 	oldscore = allscore
 	allscore = 0
 
+	if samecount > 500 and not simulationdone:
+		simulationdone = true
+		set_process(false)
 
+		nodes[0].setplayer(player.instance())
+		longest_route()
 
-
+func longest_route():
+	print(nodes[0].get_instance_id())
+#	var astar = AStar.new()
+#	astar.add_point(1, Vector3(1, 1, 0))
+#	astar.add_point(2, Vector3(0, 5, 0))
+#	astar.connect_points(1, 2, false)
