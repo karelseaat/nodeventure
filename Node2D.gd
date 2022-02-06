@@ -8,7 +8,7 @@ var food = false
 var map  : Array = []
 var envstory = ""
 var enemy = false
-var exit = false
+var home
 var player
 var environment
 var discovered = true
@@ -76,6 +76,12 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 	var colors = PoolColorArray([color])
 	draw_polygon(points_arc, colors)
 
+func draw_square(center, extra, color):
+	var posses = [Vector2(-extra, -extra)+center, Vector2(-extra, extra)+center, Vector2(extra, extra)+center, Vector2(extra, -extra)+center]
+
+	var colors = PoolColorArray([color])
+	draw_polygon(posses, colors)
+
 func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 	var nb_points = 32
 	var points_arc = PoolVector2Array()
@@ -94,11 +100,17 @@ func _draw():
 		draw_connections()
 		draw_parts()
 		draw_player()
+		draw_home()
 
 func draw_player():
 	if player:
 		var somecolor = Color(0.9, 0.9, 0.9, 1)
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
+
+func draw_home():
+	if home:
+		var somecolor = Color(0.9, 0.9, 0.9, 1)
+		draw_square(Vector2(0,0), 20, somecolor)
 
 func draw_connections():
 	var color = Color(0, 0, 0, 0.1)
@@ -142,6 +154,9 @@ func draw_parts():
 
 func setplayer(player):
 	self.player = player
+
+func sethome(home):
+	self.home = home
 
 func moveplayer():
 	for x in neighbors:

@@ -14,6 +14,5 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 	draw_polygon(points_arc, colors)
 
 func drawplay():
-	print("draw")
 	var somecolor = Color(1, 0, 0, 1)
 	draw_ball(Vector2(0,0), 80, 0, 360, somecolor)

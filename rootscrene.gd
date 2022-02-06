@@ -9,6 +9,7 @@ var balls = 30
 var current
 var simulationdone = false
 var player = preload("res://player.tscn")
+var home = preload("res://home.tscn")
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -81,13 +82,103 @@ func _process(delta):
 	if samecount > 500 and not simulationdone:
 		simulationdone = true
 		set_process(false)
+		var nodesindexes = longest_route()
 
-		nodes[0].setplayer(player.instance())
-		longest_route()
+		print(nodesindexes)
+
+		var duplicate = nodesindexes.duplicate()
+
+		var klont = duplicate.pop_back()
+		klont.water = false
+		klont.food = false
+
+		print(duplicate)
+		
+
+		nodesindexes[0].setplayer(player.instance())
+		nodesindexes[-1].sethome(home.instance())
+		var totals = route_resources(duplicate)
+		
+		var waterdone = false
+		var fooddone = false
+
+		
+		while not waterdone:
+			var choice = randi() % duplicate.size()
+			if neighborwater(duplicate[choice]) == 0:
+				duplicate[choice].water = true
+			totals = route_resources(duplicate)
+			waterdone = enough_water(duplicate, totals)
+
+		while not fooddone:
+			var choice = randi() % duplicate.size()
+			if neighborfood(duplicate[choice]) == 0:
+				duplicate[choice].food = true
+			totals = route_resources(duplicate)
+			fooddone = enough_food(duplicate, totals)
+
+func neighborfood(node):
+	var food = 0
+	for x in node.neighbors:
+		food += int(x.food)
+	return food
+
+func neighborwater(node):
+	var water = 0
+	for x in node.neighbors:
+		water += int(x.water)
+	return water
+
+func enough_water(listonodes, totals):
+	var size = listonodes.size()
+	return totals[0] >= (size/2)
+		
+func enough_food(listonodes, totals):
+	var size = listonodes.size()
+	return totals[1] >= (size/2)
+
+func route_resources(listonodes):
+	var totalwater = 0
+	var totalfood = 0
+	var totalenemy = 0
+		
+	for x in listonodes:
+		totalwater += int(x.water)
+		totalfood += int(x.food)
+		totalenemy += int(x.enemy)
+
+	return [totalwater, totalfood, totalenemy]
 
 func longest_route():
-	print(nodes[0].get_instance_id())
-#	var astar = AStar.new()
-#	astar.add_point(1, Vector3(1, 1, 0))
-#	astar.add_point(2, Vector3(0, 5, 0))
-#	astar.connect_points(1, 2, false)
+
+	var astar = AStar2D.new()
+	for x in nodes:
+		astar.add_point(x.get_instance_id(), x.position)
+
+	for x in nodes:
+		for y in x.neighbors:
+			astar.connect_points(x.get_instance_id(), y.get_instance_id(), false)
+	
+	var longestpath = []
+	var endnodes = []
+	var longestnodes = []
+	
+	for x in nodes:
+		if x.neighbors.size()  == 1:
+			endnodes.append(x)
+			
+	
+	for x in range(10):
+
+		var start = randi() % endnodes.size()
+		var end = randi() % endnodes.size() 
+		var temppath = astar.get_id_path(endnodes[start].get_instance_id(), endnodes[end].get_instance_id())
+
+		if temppath.size() > longestpath.size():
+			longestpath = temppath
+			
+	for x in longestpath:
+		longestnodes.append(instance_from_id(x))
+
+	return longestnodes
+		
