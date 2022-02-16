@@ -1,6 +1,10 @@
 extends Node2D
 
+var food = 1
+var water = 1
 
+var maxfood = 1
+var maxwater = 1
 
 func draw_ball(center, radius, angle_from, angle_to, color):
 	var nb_points = 32

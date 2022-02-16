@@ -17,18 +17,25 @@ var avgcenter
 var score = 1
 var rootstart = false
 var startatpos = false
+var visiblelevel = 0
 
 func _ready():
 	randomize()
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
-	self.food = (randi() % 3) > 1
-	self.water = (randi() % 3) > 1
 	self.enemy = (randi() % 5) > 3
+
 
 func _process(delta):
 	var speed = 5
+	
+	if self.player:
+		self.visiblelevel = 2
+		for x in self.neighbors:
+			if x.visiblelevel < 1:
+				x.visiblelevel = 1
+
 	
 	for x in allballs:
 		var distance = self.position.distance_to(x.position)
@@ -73,6 +80,7 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 		var angle_point = deg2rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
 		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
 
+	
 	var colors = PoolColorArray([color])
 	draw_polygon(points_arc, colors)
 
@@ -97,6 +105,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 
 func _draw():
 	if self.discovered:
+		
 		draw_connections()
 		draw_parts()
 		draw_player()
@@ -113,12 +122,13 @@ func draw_home():
 		draw_square(Vector2(0,0), 20, somecolor)
 
 func draw_connections():
-	var color = Color(0, 0, 0, 0.1)
-	for x in neighbors:
-		var dist = x.transform[2].distance_to(self.transform[2]) - 80
-		var angle = x.transform[2].angle_to_point(self.transform[2])
-		var klont2 = Vector2(cos(angle), sin(angle)) * dist
-		draw_line(Vector2(0,0), klont2, color, 3)
+	if self.visiblelevel == 2:
+		var color = Color(0, 0, 0, 0.1)
+		for x in neighbors:
+			var dist = x.transform[2].distance_to(self.transform[2]) - 80
+			var angle = x.transform[2].angle_to_point(self.transform[2])
+			var klont2 = Vector2(cos(angle), sin(angle)) * dist
+			draw_line(Vector2(0,0), klont2, color, 3)
 
 func draw_parts():
 
@@ -134,22 +144,26 @@ func draw_parts():
 	var foodcolor = Color(0.5, 0.5, 0.2 ,1)
 	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
 
-	draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
-	draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
+	if self.visiblelevel >= 1:
+		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
+		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
-	draw_ball(offset1, 20, angle_from, angle_to, colordark)
-	draw_ball(offset1, 15, angle_from, angle_to, color)
-	if self.water:
+		draw_ball(offset1, 20, angle_from, angle_to, colordark)
+		draw_ball(offset1, 15, angle_from, angle_to, color)
+	
+	if self.water and self.visiblelevel == 2:
 		draw_ball(offset1, 15, angle_from, angle_to, watercolor)
-		
-	draw_ball(offset2, 20, angle_from, angle_to, colordark)
-	draw_ball(offset2, 15, angle_from, angle_to, color)
-	if self.food:
+	
+	if self.visiblelevel >= 1:	
+		draw_ball(offset2, 20, angle_from, angle_to, colordark)
+		draw_ball(offset2, 15, angle_from, angle_to, color)
+	if self.food and self.visiblelevel == 2:
 		draw_ball(offset2, 15, angle_from, angle_to, foodcolor)
-		
-	draw_ball(offset3, 20, angle_from, angle_to, colordark)
-	draw_ball(offset3, 15, angle_from, angle_to, color)
-	if self.enemy:
+	
+	if self.visiblelevel >= 1:	
+		draw_ball(offset3, 20, angle_from, angle_to, colordark)
+		draw_ball(offset3, 15, angle_from, angle_to, color)
+	if self.enemy and self.visiblelevel == 2:
 		draw_ball(offset3, 15, angle_from, angle_to, enemycolor)
 
 func setplayer(player):
@@ -163,3 +177,17 @@ func moveplayer():
 		if x.player:
 			self.player = x.player
 			x.player = null
+
+	if self.player:
+		if self.water and self.player.water <= self.player.maxwater:
+			self.player.water += 1
+		else:
+			self.player.water -= 1
+
+		if self.food and self.player.food <= self.player.maxfood:
+			self.player.food += 1
+		else:
+			self.player.food -= 1
+	
+		print(self.player.food, self.player.water)
+		

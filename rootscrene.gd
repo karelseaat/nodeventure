@@ -10,6 +10,7 @@ var current
 var simulationdone = false
 var player = preload("res://player.tscn")
 var home = preload("res://home.tscn")
+var totalcenter = Vector2()
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -29,7 +30,8 @@ func random_connect(x, small):
 		x.add_neighbor(nodes[newindex])
 		nodes[newindex].add_neighbor(x)
 		if x.startatpos:
-			x.position = nodes[newindex].position +  Vector2( ((randi() % 5)-2.5) * 10, ((randi() % 5)-2.5)*10)
+
+			x.position = nodes[newindex].position + (totalcenter.normalized() * 10)
 		nodes[newindex].rootstart = true
 		x.rootstart = true
 		x.score = 0
@@ -52,7 +54,6 @@ func _ready():
 		random_connect(x, 3)
 
 func _process(delta):
-	var totalcenter = Vector2()
 	
 	for x in nodes:
 		totalcenter += x.position
@@ -79,43 +80,32 @@ func _process(delta):
 	oldscore = allscore
 	allscore = 0
 
+
 	if samecount > 500 and not simulationdone:
 		simulationdone = true
 		set_process(false)
 		var nodesindexes = longest_route()
-
-		print(nodesindexes)
-
 		var duplicate = nodesindexes.duplicate()
-
 		var klont = duplicate.pop_back()
 		klont.water = false
 		klont.food = false
 
-		print(duplicate)
-		
 
 		nodesindexes[0].setplayer(player.instance())
+		
 		nodesindexes[-1].sethome(home.instance())
 		var totals = route_resources(duplicate)
 		
-		var waterdone = false
-		var fooddone = false
+		for x in duplicate:
 
-		
-		while not waterdone:
-			var choice = randi() % duplicate.size()
-			if neighborwater(duplicate[choice]) == 0:
-				duplicate[choice].water = true
-			totals = route_resources(duplicate)
-			waterdone = enough_water(duplicate, totals)
+			if neighborwater(x) == 0:
+				x.water = true
 
-		while not fooddone:
-			var choice = randi() % duplicate.size()
-			if neighborfood(duplicate[choice]) == 0:
-				duplicate[choice].food = true
+			if neighborfood(x) == 0:
+				x.food = true
 			totals = route_resources(duplicate)
-			fooddone = enough_food(duplicate, totals)
+
+
 
 func neighborfood(node):
 	var food = 0

@@ -1,0 +1,97 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.godotengine.nodes"
+4    android:installLocation="auto"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="19"
+10        android:targetSdkVersion="30" />
+11
+12    <supports-screens
+12-->/home/aat/nodeventure/android/build/AndroidManifest.xml:12:5-16:40
+13        android:largeScreens="true"
+13-->/home/aat/nodeventure/android/build/AndroidManifest.xml:15:9-36
+14        android:normalScreens="true"
+14-->/home/aat/nodeventure/android/build/AndroidManifest.xml:14:9-37
+15        android:smallScreens="true"
+15-->/home/aat/nodeventure/android/build/AndroidManifest.xml:13:9-36
+16        android:xlargeScreens="true" />
+16-->/home/aat/nodeventure/android/build/AndroidManifest.xml:16:9-37
+17
+18    <instrumentation
+18-->/home/aat/nodeventure/android/build/src/debug/AndroidManifest.xml:10:5-15:60
+19        android:name=".GodotInstrumentation"
+19-->/home/aat/nodeventure/android/build/src/debug/AndroidManifest.xml:12:9-45
+20        android:icon="@mipmap/icon"
+20-->/home/aat/nodeventure/android/build/src/debug/AndroidManifest.xml:13:9-36
+21        android:label="@string/godot_project_name_string"
+21-->/home/aat/nodeventure/android/build/src/debug/AndroidManifest.xml:14:9-58
+22        android:targetPackage="org.godotengine.$genname" />
+22-->/home/aat/nodeventure/android/build/src/debug/AndroidManifest.xml:15:9-57
+23    <!-- glEsVersion is modified by the exporter, changing this value here has no effect. -->
+24    <uses-feature
+24-->/home/aat/nodeventure/android/build/AndroidManifest.xml:19:5-21:35
+25        android:glEsVersion="0x00020000"
+25-->/home/aat/nodeventure/android/build/AndroidManifest.xml:20:9-41
+26        android:required="true" />
+26-->/home/aat/nodeventure/android/build/AndroidManifest.xml:21:9-32
+27
+28    <application
+28-->/home/aat/nodeventure/android/build/AndroidManifest.xml:31:5-69:19
+29        android:allowBackup="false"
+29-->/home/aat/nodeventure/android/build/AndroidManifest.xml:31:68-95
+30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+30-->[androidx.core:core:1.0.0] /home/aat/.gradle/caches/transforms-2/files-2.1/ee4998e5c44f8791e55e396202e7f092/core-1.0.0/AndroidManifest.xml:22:18-86
+31        android:debuggable="true"
+32        android:icon="@mipmap/icon"
+32-->/home/aat/nodeventure/android/build/AndroidManifest.xml:31:181-208
+33        android:label="@string/godot_project_name_string"
+33-->/home/aat/nodeventure/android/build/AndroidManifest.xml:31:18-67
+34        android:requestLegacyExternalStorage="false" >
+34-->/home/aat/nodeventure/android/build/AndroidManifest.xml:31:136-180
+35        <activity
+35-->/home/aat/nodeventure/android/build/AndroidManifest.xml:46:9-63:20
+36            android:name="com.godot.game.GodotApp"
+36-->/home/aat/nodeventure/android/build/AndroidManifest.xml:47:13-37
+37            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
+37-->/home/aat/nodeventure/android/build/AndroidManifest.xml:52:13-141
+38            android:label="@string/godot_project_name_string"
+38-->/home/aat/nodeventure/android/build/AndroidManifest.xml:48:13-62
+39            android:launchMode="singleTask"
+39-->/home/aat/nodeventure/android/build/AndroidManifest.xml:50:13-44
+40            android:resizeableActivity="false"
+40-->/home/aat/nodeventure/android/build/AndroidManifest.xml:53:13-47
+41            android:screenOrientation="landscape"
+41-->/home/aat/nodeventure/android/build/AndroidManifest.xml:51:13-50
+42            android:theme="@style/GodotAppSplashTheme" >
+42-->/home/aat/nodeventure/android/build/AndroidManifest.xml:49:13-55
+43            <intent-filter>
+43-->/home/aat/nodeventure/android/build/AndroidManifest.xml:59:13-62:29
+44                <action android:name="android.intent.action.MAIN" />
+44-->/home/aat/nodeventure/android/build/AndroidManifest.xml:60:17-69
+44-->/home/aat/nodeventure/android/build/AndroidManifest.xml:60:25-66
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+46-->/home/aat/nodeventure/android/build/AndroidManifest.xml:61:17-77
+46-->/home/aat/nodeventure/android/build/AndroidManifest.xml:61:27-74
+47            </intent-filter>
+48        </activity>
+49        <!-- Records the version of the Godot editor used for building -->
+50        <meta-data
+51            android:name="org.godotengine.editor.version"
+52            android:value="3.3.4.stable" /> <!-- Records the version of the Godot library -->
+53        <meta-data
+53-->[godot-lib.debug.aar] /home/aat/.gradle/caches/transforms-2/files-2.1/ffbaff7c2eb1d8319c1ccff75db3c820/jetified-godot-lib.debug/AndroidManifest.xml:20:9-22:44
+54            android:name="org.godotengine.library.version"
+54-->[godot-lib.debug.aar] /home/aat/.gradle/caches/transforms-2/files-2.1/ffbaff7c2eb1d8319c1ccff75db3c820/jetified-godot-lib.debug/AndroidManifest.xml:21:13-59
+55            android:value="3.3.4.stable" />
+55-->[godot-lib.debug.aar] /home/aat/.gradle/caches/transforms-2/files-2.1/ffbaff7c2eb1d8319c1ccff75db3c820/jetified-godot-lib.debug/AndroidManifest.xml:22:13-41
+56
+57        <service android:name="org.godotengine.godot.GodotDownloaderService" />
+57-->[godot-lib.debug.aar] /home/aat/.gradle/caches/transforms-2/files-2.1/ffbaff7c2eb1d8319c1ccff75db3c820/jetified-godot-lib.debug/AndroidManifest.xml:24:9-80
+57-->[godot-lib.debug.aar] /home/aat/.gradle/caches/transforms-2/files-2.1/ffbaff7c2eb1d8319c1ccff75db3c820/jetified-godot-lib.debug/AndroidManifest.xml:24:18-77
+58    </application>
+59
+60</manifest>
