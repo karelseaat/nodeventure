@@ -11,6 +11,8 @@ var simulationdone = false
 var player = preload("res://player.tscn")
 var home = preload("res://home.tscn")
 var totalcenter = Vector2()
+var activeplayer = null
+var cam
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -44,7 +46,8 @@ func _ready():
 	set_process(true)
 	for x in balls:
 		nodes.append(scene.instance())
-	
+		
+
 	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
@@ -52,6 +55,8 @@ func _ready():
 
 	for x in nodes:
 		random_connect(x, 3)
+		
+	cam = get_tree().get_root().get_child(0).get_child(1)
 
 func _process(delta):
 	
@@ -92,7 +97,8 @@ func _process(delta):
 
 
 		nodesindexes[0].setplayer(player.instance())
-		
+
+		cam.target = nodesindexes[0]
 		nodesindexes[-1].sethome(home.instance())
 		var totals = route_resources(duplicate)
 		
@@ -105,6 +111,7 @@ func _process(delta):
 				x.food = true
 			totals = route_resources(duplicate)
 
+		
 
 
 func neighborfood(node):
@@ -157,7 +164,6 @@ func longest_route():
 		if x.neighbors.size()  == 1:
 			endnodes.append(x)
 			
-	
 	for x in range(10):
 
 		var start = randi() % endnodes.size()

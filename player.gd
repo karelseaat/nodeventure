@@ -5,6 +5,8 @@ var water = 1
 
 var maxfood = 1
 var maxwater = 1
+var live = 3
+var dead = false
 
 func draw_ball(center, radius, angle_from, angle_to, color):
 	var nb_points = 32
@@ -17,6 +19,11 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 	var colors = PoolColorArray([color])
 	draw_polygon(points_arc, colors)
 
-func drawplay():
-	var somecolor = Color(1, 0, 0, 1)
-	draw_ball(Vector2(0,0), 80, 0, 360, somecolor)
+#func drawplay():
+#	print("draw player")
+#	var somecolor = Color(1, 0, 0, 1)
+#	draw_ball(Vector2(0,0), 80, 0, 360, somecolor)
+
+func killplayer():
+	self.dead = true
+#	queue_free()

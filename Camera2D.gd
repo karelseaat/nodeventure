@@ -16,7 +16,8 @@ func _process(delta):
 
 func _unhandled_input(event):
 
-	if event is InputEventMouseButton and target != self and is_instance_valid(target):
+	if Input.is_action_just_released("move") and target != self and is_instance_valid(target) and not target.player:
+		
 		target.moveplayer()
 	
 	if event.is_action_pressed("zoom_in"):

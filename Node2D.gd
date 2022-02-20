@@ -18,6 +18,7 @@ var score = 1
 var rootstart = false
 var startatpos = false
 var visiblelevel = 0
+var parent = null
 
 func _ready():
 	randomize()
@@ -30,7 +31,9 @@ func _ready():
 func _process(delta):
 	var speed = 5
 	
-	if self.player:
+	if self.player and is_instance_valid(self.player):
+		
+		self.get_parent().activeplayer = player
 		self.visiblelevel = 2
 		for x in self.neighbors:
 			if x.visiblelevel < 1:
@@ -112,7 +115,7 @@ func _draw():
 		draw_home()
 
 func draw_player():
-	if player:
+	if player and player.dead == false:
 		var somecolor = Color(0.9, 0.9, 0.9, 1)
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
@@ -174,20 +177,25 @@ func sethome(home):
 
 func moveplayer():
 	for x in neighbors:
-		if x.player:
+		if x.player and x.player.dead == false:
 			self.player = x.player
 			x.player = null
 
-	if self.player:
+	if self.player and is_instance_valid(self.player):
 		if self.water and self.player.water <= self.player.maxwater:
-			self.player.water += 1
+			self.player.water = self.player.maxwater
 		else:
 			self.player.water -= 1
 
 		if self.food and self.player.food <= self.player.maxfood:
-			self.player.food += 1
+			self.player.food = self.player.maxfood
 		else:
 			self.player.food -= 1
 	
-		print(self.player.food, self.player.water)
+		if self.player.food < 0 or self.player.water < 0:
+			self.player.live -= 1
+		
+		if self.player.live == 0:
+			print("adstikke dood !")
+			self.player.killplayer()
 		
