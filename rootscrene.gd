@@ -14,6 +14,8 @@ var totalcenter = Vector2()
 var activeplayer = null
 var cam
 
+
+
 func random_choice(x, smal):
 	var goodchoice = false
 	var choice = 0
@@ -47,10 +49,10 @@ func _ready():
 	for x in balls:
 		nodes.append(scene.instance())
 		
-
 	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
+#		x.realname = randname()
 		self.add_child(x)
 
 	for x in nodes:
@@ -72,6 +74,9 @@ func _process(delta):
 		nodes.append(scene.instance())
 		nodes[-1].allballs = nodes
 		nodes[-1].startatpos = true
+		
+		
+#		nodes[-1].realname = randname()
 		self.add_child(nodes[-1])
 		random_connect(nodes[-1], 2)
 
@@ -103,16 +108,12 @@ func _process(delta):
 		var totals = route_resources(duplicate)
 		
 		for x in duplicate:
-
 			if neighborwater(x) == 0:
 				x.water = true
 
 			if neighborfood(x) == 0:
 				x.food = true
 			totals = route_resources(duplicate)
-
-		
-
 
 func neighborfood(node):
 	var food = 0

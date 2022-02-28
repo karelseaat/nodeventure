@@ -20,6 +20,20 @@ var startatpos = false
 var visiblelevel = 0
 var parent = null
 var vibeplay = false
+var realname = ""
+
+var names1 = ["Green", "Rose", "Skill", "Hellen", "Clam", "Winter", "Snow", "Oak", "Kings", "Queens", "Law"]
+var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "fields", "hills", "plain"]
+var pre = ["Great", "Lesser", "New", "South", "East", "North", "West"]
+
+func randname():
+	var choice1 = names1[randi() % names1.size()]
+	var choice2 = names2[randi() % names2.size()]
+	var choice3 = ""
+	if (randi() % 5) > 3:
+		choice3 = pre[randi() % pre.size()]
+	
+	return choice3 + " " + choice1 + choice2
 
 func _ready():
 	randomize()
@@ -27,6 +41,7 @@ func _ready():
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
 	self.enemy = (randi() % 5) > 3
+	self.realname = randname()
 
 
 func _process(delta):
@@ -112,6 +127,8 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width)
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width+1)
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width+3)
+	
+	
 
 func _draw():
 	if self.discovered:
@@ -120,6 +137,10 @@ func _draw():
 		draw_parts()
 		draw_player()
 		draw_home()
+#		draw_name_label()
+#
+#func draw_name_label():
+#	$Label.text = self.realname
 
 func draw_player():
 	if player and player.dead == false:
@@ -155,6 +176,7 @@ func draw_parts():
 	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
 
 	if self.visiblelevel >= 1:
+		$Label.text = self.realname
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
