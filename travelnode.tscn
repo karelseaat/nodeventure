@@ -1,10 +1,27 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Node2D.gd" type="Script" id=1]
 [ext_resource path="res://Area2D.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 79.7504
+
+[sub_resource type="Animation" id=2]
+resource_name = "vibe"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.45, 1 ),
+"transitions": PoolRealArray( 3.03143, 2.37841, 2.63902 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.1, 1.1 ), Vector2( 1, 1 ) ]
+}
 
 [node name="travelnode" type="Node2D"]
 script = ExtResource( 1 )
@@ -14,3 +31,6 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/vibe = SubResource( 2 )

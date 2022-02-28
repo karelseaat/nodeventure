@@ -19,6 +19,7 @@ var rootstart = false
 var startatpos = false
 var visiblelevel = 0
 var parent = null
+var vibeplay = false
 
 func _ready():
 	randomize()
@@ -31,8 +32,14 @@ func _ready():
 func _process(delta):
 	var speed = 5
 	
+	if self.vibeplay and not self.player:
+		self.vibeplay = false
+		$AnimationPlayer.stop()
+	
 	if self.player and is_instance_valid(self.player):
-		
+		if not self.vibeplay:
+			self.vibeplay = true
+			$AnimationPlayer.play("vibe")
 		self.get_parent().activeplayer = player
 		self.visiblelevel = 2
 		for x in self.neighbors:
