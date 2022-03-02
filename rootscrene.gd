@@ -13,7 +13,7 @@ var home = preload("res://home.tscn")
 var totalcenter = Vector2()
 var activeplayer = null
 var cam
-
+var astar = null
 
 
 func random_choice(x, smal):
@@ -52,7 +52,6 @@ func _ready():
 	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
-#		x.realname = randname()
 		self.add_child(x)
 
 	for x in nodes:
@@ -76,7 +75,6 @@ func _process(delta):
 		nodes[-1].startatpos = true
 		
 		
-#		nodes[-1].realname = randname()
 		self.add_child(nodes[-1])
 		random_connect(nodes[-1], 2)
 
@@ -100,7 +98,6 @@ func _process(delta):
 		klont.water = false
 		klont.food = false
 
-
 		nodesindexes[0].setplayer(player.instance())
 
 		cam.target = nodesindexes[0]
@@ -114,6 +111,18 @@ func _process(delta):
 			if neighborfood(x) == 0:
 				x.food = true
 			totals = route_resources(duplicate)
+
+		var lel = get_splitnode_index(nodesindexes)[0]
+		var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
+		instance_from_id(testings[1]).setportrait()
+
+
+func get_splitnode_index(nodesindexes):
+	var splits = []
+	for x in nodesindexes:
+		if len(x.neighbors) > 2:
+			splits.append(x)
+	return splits
 
 func neighborfood(node):
 	var food = 0
@@ -149,7 +158,7 @@ func route_resources(listonodes):
 
 func longest_route():
 
-	var astar = AStar2D.new()
+	astar = AStar2D.new()
 	for x in nodes:
 		astar.add_point(x.get_instance_id(), x.position)
 
