@@ -12,7 +12,7 @@ func _ready():
 	live  = $"MarginContainer/VBoxContainer/Live label"
 	
 	rootscene = get_tree().root.get_child(0).get_child(1).get_child(0)
-#	player = get_tree().root.get_child(0).get_child(1).get_child(0).realplayer
+
 
 	set_process(true)
 #

@@ -15,6 +15,17 @@ var activeplayer = null
 var cam
 var astar = null
 
+func getdirection(vec1, vec2):
+	var klont = (vec1 + vec2).angle()
+	
+	if klont > 45 and klont < 135:
+		return "north"
+	elif klont > 135 and klont > 225:
+		return "east"
+	elif klont > 225 and klont > 315:
+		return "zouth"
+	else:
+		return "west"
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -114,8 +125,11 @@ func _process(delta):
 
 		var lel = get_splitnode_index(nodesindexes)[0]
 		var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
-		instance_from_id(testings[1]).setportrait()
-
+		var piep = instance_from_id(testings[1])
+#		var dings = piep.textures[randi() % piep.textures.size()]
+		
+		get_tree().root.get_child(0).get_child(2).get_child(0).set_texture(piep.currentbackground)
+		get_tree().root.get_child(0).get_child(2).get_child(0).scale = Vector2(5, 5)
 
 func get_splitnode_index(nodesindexes):
 	var splits = []

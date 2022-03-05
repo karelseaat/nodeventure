@@ -27,9 +27,12 @@ var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "f
 var pre = ["Great", "Lesser", "New", "South", "East", "North", "West"]
 
 var textures = [preload("portrait1.png"), preload("portrait2.png")]
+var backgroundtextures =  [preload("landschap1.jpeg"), preload("landschap2.jpeg"), preload("landschap3.jpeg"), preload("landschap4.jpeg"), preload("landschap5.jpeg"), preload("landschap6.jpeg"), preload("landschap7.jpeg"), preload("landschap8.jpeg"), preload("landschap9.jpeg"), preload("landschap10.jpeg")]
 
 var somecolor = Color(0.9, 0.9, 0.9, 1)
 var colordark = Color(0.1, 0.1, 0.1, 1)
+
+var currentbackground = null
 
 func randname():
 	var choice1 = names1[randi() % names1.size()]
@@ -47,9 +50,8 @@ func _ready():
 	set_process(true)
 	self.enemy = (randi() % 5) > 3
 	self.realname = randname()
+	self.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
 
-func setportrait():
-	$Sprite.texture = textures[randi() % textures.size()]
 
 func _process(delta):
 	var speed = 5
@@ -230,3 +232,12 @@ func moveplayer():
 			print("adstikke dood !")
 			self.player.killplayer()
 		
+func clickit():
+	get_tree().root.get_child(0).get_child(2).get_child(0).set_texture(currentbackground)
+	
+#	if $Sprite.texture and not $Sprite.visible:
+#		$Sprite.visible = true
+#	else:
+#		$Sprite.visible = false
+#	for x in neighbors:
+#		x.get_node("Sprite").visible = false
