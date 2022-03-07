@@ -27,12 +27,13 @@ var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "f
 var pre = ["Great", "Lesser", "New", "South", "East", "North", "West"]
 
 var textures = [preload("portrait1.png"), preload("portrait2.png")]
-var backgroundtextures =  [preload("landschap1.jpeg"), preload("landschap2.jpeg"), preload("landschap3.jpeg"), preload("landschap4.jpeg"), preload("landschap5.jpeg"), preload("landschap6.jpeg"), preload("landschap7.jpeg"), preload("landschap8.jpeg"), preload("landschap9.jpeg"), preload("landschap10.jpeg")]
+
 
 var somecolor = Color(0.9, 0.9, 0.9, 1)
 var colordark = Color(0.1, 0.1, 0.1, 1)
 
 var currentbackground = null
+var currentportrait = null
 
 func randname():
 	var choice1 = names1[randi() % names1.size()]
@@ -50,7 +51,6 @@ func _ready():
 	set_process(true)
 	self.enemy = (randi() % 5) > 3
 	self.realname = randname()
-	self.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
 
 
 func _process(delta):
@@ -58,7 +58,8 @@ func _process(delta):
 	
 	if self.vibeplay and not self.player:
 		self.vibeplay = false
-		$AnimationPlayer.stop()
+		$AnimationPlayer.play("stop")
+#		$AnimationPlayer.stop()
 	
 	if self.player and is_instance_valid(self.player):
 		if not self.vibeplay:
@@ -158,12 +159,13 @@ func draw_home():
 
 func draw_connections():
 	if self.visiblelevel == 2:
-		var color = Color(0, 0, 0, 0.1)
+		var color = Color(0.1, 0.1, 0.1, 1)
+
 		for x in neighbors:
 			var dist = x.transform[2].distance_to(self.transform[2]) - 80
 			var angle = x.transform[2].angle_to_point(self.transform[2])
 			var klont2 = Vector2(cos(angle), sin(angle)) * dist
-			draw_line(Vector2(0,0), klont2, color, 3)
+			draw_line(Vector2(0,0), klont2, color, 6)
 
 func draw_parts():
 
@@ -234,10 +236,11 @@ func moveplayer():
 		
 func clickit():
 	get_tree().root.get_child(0).get_child(2).get_child(0).set_texture(currentbackground)
+	get_tree().root.get_child(0).get_child(2).get_child(0).scale = Vector2(1, 1)
 	
-#	if $Sprite.texture and not $Sprite.visible:
-#		$Sprite.visible = true
-#	else:
-#		$Sprite.visible = false
-#	for x in neighbors:
-#		x.get_node("Sprite").visible = false
+	if is_instance_valid(currentportrait):
+		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(currentportrait)
+		get_tree().root.get_child(0).get_child(2).get_child(1).scale = Vector2(0.5, 0.5)
+	else:
+		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(null)
+

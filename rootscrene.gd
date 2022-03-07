@@ -14,6 +14,28 @@ var totalcenter = Vector2()
 var activeplayer = null
 var cam
 var astar = null
+var backgroundtextures =  []
+
+func get_files(dirpath: String, filter: String):
+	var dir = Directory.new()
+	dir.open(dirpath)
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	var files = []
+
+	while (file_name != ""):
+		var path = dir.get_current_dir() + "/" + file_name
+		
+		if not dir.current_is_dir() and filter in  path.split(".")[-1]:
+			print("Found file: %s" % path)
+			files.append(load(path))
+
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+	return files
+	
 
 func getdirection(vec1, vec2):
 	var klont = (vec1 + vec2).angle()
@@ -34,7 +56,6 @@ func random_choice(x, smal):
 		choice = randi() % nodes.size()
 		if nodes[choice].rootstart and nodes[choice].neighbors.size() < smal:
 			goodchoice = true
-	
 	return choice
 	
 func random_connect(x, small):
@@ -59,7 +80,10 @@ func _ready():
 	set_process(true)
 	for x in balls:
 		nodes.append(scene.instance())
-		
+
+
+	backgroundtextures = get_files("./landscapes", "png")
+
 	nodes[0].rootstart = true
 	for x in nodes:
 		x.allballs = nodes
@@ -67,6 +91,7 @@ func _ready():
 
 	for x in nodes:
 		random_connect(x, 3)
+		x.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
 		
 	cam = get_tree().get_root().get_child(0).get_child(1)
 
@@ -82,14 +107,13 @@ func _process(delta):
 	
 	if nodes.size() < balls:
 		nodes.append(scene.instance())
+		nodes[-1].currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
 		nodes[-1].allballs = nodes
 		nodes[-1].startatpos = true
-		
 		
 		self.add_child(nodes[-1])
 		random_connect(nodes[-1], 2)
 
-	
 	for x in nodes:
 		allscore += x.score
 		
@@ -126,10 +150,11 @@ func _process(delta):
 		var lel = get_splitnode_index(nodesindexes)[0]
 		var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
 		var piep = instance_from_id(testings[1])
-#		var dings = piep.textures[randi() % piep.textures.size()]
 		
-		get_tree().root.get_child(0).get_child(2).get_child(0).set_texture(piep.currentbackground)
-		get_tree().root.get_child(0).get_child(2).get_child(0).scale = Vector2(5, 5)
+		var allports = get_files("./portraits", "png")
+		
+		piep.currentportrait =  allports[randi() % allports.size()]
+
 
 func get_splitnode_index(nodesindexes):
 	var splits = []

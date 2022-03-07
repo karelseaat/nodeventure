@@ -60,6 +60,9 @@ script = ExtResource( 2 )
 layer = -1
 
 [node name="Sprite2" type="Sprite" parent="CanvasLayer2"]
-scale = Vector2( 1528.64, 751.755 )
+scale = Vector2( 100, 100 )
 texture = SubResource( 1 )
+centered = false
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer2"]
 centered = false
