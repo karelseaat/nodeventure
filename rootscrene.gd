@@ -38,8 +38,10 @@ func get_files(dirpath: String, filter: String):
 	
 
 func getdirection(vec1, vec2):
-	var klont = (vec1 + vec2).angle()
-	
+	var klont = rad2deg((vec1 - vec2).angle())
+	if klont < 0:
+		klont = klont + 360
+	print(klont)
 	if klont > 45 and klont < 135:
 		return "north"
 	elif klont > 135 and klont > 225:
@@ -149,11 +151,19 @@ func _process(delta):
 
 		var lel = get_splitnode_index(nodesindexes)[0]
 		var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
+		
 		var piep = instance_from_id(testings[1])
 		
 		var allports = get_files("./portraits", "png")
 		
-		piep.currentportrait =  allports[randi() % allports.size()]
+		
+		for x in instance_from_id(testings[0]).neighbors:
+			if x in nodesindexes and x != piep :
+#				print(instance_from_id(testings[0]).position, x.position)
+#				print(rad2deg(( instance_from_id(testings[0]).position - x.position).angle()))
+				print(getdirection(instance_from_id(testings[0]).position, x.position))
+		
+		piep.currentportrait = allports[randi() % allports.size()]
 
 
 func get_splitnode_index(nodesindexes):

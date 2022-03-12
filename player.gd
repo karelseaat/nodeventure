@@ -19,10 +19,6 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 	var colors = PoolColorArray([color])
 	draw_polygon(points_arc, colors)
 
-#func drawplay():
-#	print("draw player")
-#	var somecolor = Color(1, 0, 0, 1)
-#	draw_ball(Vector2(0,0), 80, 0, 360, somecolor)
 
 func killplayer():
 	self.dead = true
