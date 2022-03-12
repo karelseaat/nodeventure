@@ -9,12 +9,26 @@ var balls = 30
 var current
 var simulationdone = false
 var player = preload("res://player.tscn")
-var home = preload("res://home.tscn")
+#var home = preload("res://home.tscn")
 var totalcenter = Vector2()
 var activeplayer = null
 var cam
 var astar = null
 var backgroundtextures =  []
+
+var goodstorys = [
+	"Im qute sure that the {str} direction is a good path.",
+	"I saw people traveling on the {str} path.",
+	"My parents told me there is a trading route on the {str} path.",
+	"I alwais go to the market via the {str} path."
+]
+
+var badstorys = [
+	"Dont take the {str} path is leads to nowhere !",
+	"I saw no one return from the {str} path.",
+	"adventures have traveled the {str} path but they said there is noting there.",
+	"The people that travled the {str} path didnt return good news"
+]
 
 func get_files(dirpath: String, filter: String):
 	var dir = Directory.new()
@@ -41,15 +55,23 @@ func getdirection(vec1, vec2):
 	var klont = rad2deg((vec1 - vec2).angle())
 	if klont < 0:
 		klont = klont + 360
-	print(klont)
-	if klont > 45 and klont < 135:
-		return "north"
-	elif klont > 135 and klont > 225:
-		return "east"
-	elif klont > 225 and klont > 315:
-		return "zouth"
-	else:
+
+	if klont > -22.5 and klont < 22.5:
 		return "west"
+	elif klont > 22.5 and klont < 67.5:
+		return "north west"
+	elif klont > 67.5 and klont < 112.5:
+		return "north"
+	elif klont > 112.5 and klont < 157.5:
+		return "north east"
+	elif klont > 157.5 and klont < 202.5:
+		return "east"
+	elif klont > 202.5 and klont < 247.5:
+		return "south east"
+	elif klont > 247.5 and klont < 292.5:
+		return "south"	
+	elif klont > 292.5 and klont < 337.5:
+		return "south west"	
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -138,7 +160,7 @@ func _process(delta):
 		nodesindexes[0].setplayer(player.instance())
 
 		cam.target = nodesindexes[0]
-		nodesindexes[-1].sethome(home.instance())
+#		nodesindexes[-1].sethome(home.instance())
 		var totals = route_resources(duplicate)
 		
 		for x in duplicate:
@@ -158,12 +180,21 @@ func _process(delta):
 		
 		
 		for x in instance_from_id(testings[0]).neighbors:
-			if x in nodesindexes and x != piep :
-#				print(instance_from_id(testings[0]).position, x.position)
-#				print(rad2deg(( instance_from_id(testings[0]).position - x.position).angle()))
-				print(getdirection(instance_from_id(testings[0]).position, x.position))
+			var direction = null
+			if x != piep:
+				piep.currentportrait = allports[randi() % allports.size()]
+				if x in nodesindexes: 
+					direction =  getdirection(instance_from_id(testings[0]).position, x.position)
+					piep.directiontext = goodstorys[randi() % goodstorys.size()].format({"str": direction})
+					return
+				else:
+					direction =  getdirection(instance_from_id(testings[0]).position, x.position)
+					piep.directiontext = badstorys[randi() % badstorys.size()].format({"str": direction})
+					return
 		
-		piep.currentportrait = allports[randi() % allports.size()]
+				
+				
+
 
 
 func get_splitnode_index(nodesindexes):

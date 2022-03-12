@@ -65,4 +65,18 @@ texture = SubResource( 1 )
 centered = false
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer2"]
+position = Vector2( 0, 100 )
 centered = false
+
+[node name="Label" type="Label" parent="CanvasLayer2"]
+anchor_right = 3.559
+anchor_bottom = 3.753
+margin_top = 270.0
+margin_right = -1788.21
+margin_bottom = -1907.54
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

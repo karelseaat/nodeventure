@@ -13,7 +13,6 @@ func _ready():
 	
 	rootscene = get_tree().root.get_child(0).get_child(1).get_child(0)
 
-
 	set_process(true)
 #
 func _process(delta):

@@ -27,7 +27,7 @@ var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "f
 var pre = ["Great", "Lesser", "New", "South", "East", "North", "West"]
 
 var textures = [preload("portrait1.png"), preload("portrait2.png")]
-
+var directiontext = ""
 
 var somecolor = Color(0.9, 0.9, 0.9, 1)
 var colordark = Color(0.1, 0.1, 0.1, 1)
@@ -145,17 +145,17 @@ func _draw():
 		draw_connections()
 		draw_parts()
 		draw_player()
-		draw_home()
+#		draw_home()
 
 
 func draw_player():
 	if player and player.dead == false:
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
-func draw_home():
-	if home:
-		var somecolor = Color(0.9, 0.9, 0.9, 1)
-		draw_square(Vector2(0,0), 20, somecolor)
+#func draw_home():
+#	if home:
+#		var somecolor = Color(0.9, 0.9, 0.9, 1)
+#		draw_square(Vector2(0,0), 20, somecolor)
 
 func draw_connections():
 	if self.visiblelevel == 2:
@@ -207,8 +207,8 @@ func draw_parts():
 func setplayer(player):
 	self.player = player
 
-func sethome(home):
-	self.home = home
+#func sethome(home):
+#	self.home = home
 
 func moveplayer():
 	for x in neighbors:
@@ -241,6 +241,11 @@ func clickit():
 	if is_instance_valid(currentportrait):
 		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(currentportrait)
 		get_tree().root.get_child(0).get_child(2).get_child(1).scale = Vector2(0.5, 0.5)
+		
+		
 	else:
 		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(null)
+	
+#	print(directiontext)
+	get_tree().root.get_child(0).get_child(2).get_child(2).text = directiontext
 
