@@ -17,17 +17,17 @@ var astar = null
 var backgroundtextures =  []
 
 var goodstorys = [
-	"Im qute sure that the {str} direction is a good path.",
-	"I saw people traveling on the {str} path.",
-	"My parents told me there is a trading route on the {str} path.",
-	"I alwais go to the market via the {str} path."
+	"Im qute sure that at {place} the {str} direction is a good path.",
+	"I saw people at {place} traveling on the {str} path.",
+	"My parents told me that at {place} there is a trading route on the {str} path.",
+	"I alwais go to the market via the {str} at the {place} split."
 ]
 
 var badstorys = [
-	"Dont take the {str} path is leads to nowhere !",
-	"I saw no one return from the {str} path.",
-	"adventures have traveled the {str} path but they said there is noting there.",
-	"The people that travled the {str} path didnt return good news"
+	"Dont take the {str} path at {place} it leads to nowhere !",
+	"I saw no one return from the {str} path on the {place} split.",
+	"Adventures have traveled the {str} path at {place} but they said there is noting there.",
+	"The people that travled the {str} path at {place} didnt return with good news."
 ]
 
 func get_files(dirpath: String, filter: String):
@@ -42,7 +42,7 @@ func get_files(dirpath: String, filter: String):
 		var path = dir.get_current_dir() + "/" + file_name
 		
 		if not dir.current_is_dir() and filter in  path.split(".")[-1]:
-			print("Found file: %s" % path)
+#			print("Found file: %s" % path)
 			files.append(load(path))
 
 		file_name = dir.get_next()
@@ -69,9 +69,9 @@ func getdirection(vec1, vec2):
 	elif klont > 202.5 and klont < 247.5:
 		return "south east"
 	elif klont > 247.5 and klont < 292.5:
-		return "south"	
+		return "south"
 	elif klont > 292.5 and klont < 337.5:
-		return "south west"	
+		return "south west"
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -160,7 +160,6 @@ func _process(delta):
 		nodesindexes[0].setplayer(player.instance())
 
 		cam.target = nodesindexes[0]
-#		nodesindexes[-1].sethome(home.instance())
 		var totals = route_resources(duplicate)
 		
 		for x in duplicate:
@@ -171,31 +170,38 @@ func _process(delta):
 				x.food = true
 			totals = route_resources(duplicate)
 
-		var lel = get_splitnode_index(nodesindexes)[0]
-		var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
+		var lel = get_splitnode_index(nodesindexes)
 		
-		var piep = instance_from_id(testings[1])
-		
-		var allports = get_files("./portraits", "png")
-		
-		
-		for x in instance_from_id(testings[0]).neighbors:
-			var direction = null
-			if x != piep:
-				piep.currentportrait = allports[randi() % allports.size()]
-				if x in nodesindexes: 
-					direction =  getdirection(instance_from_id(testings[0]).position, x.position)
-					piep.directiontext = goodstorys[randi() % goodstorys.size()].format({"str": direction})
-					return
-				else:
-					direction =  getdirection(instance_from_id(testings[0]).position, x.position)
-					piep.directiontext = badstorys[randi() % badstorys.size()].format({"str": direction})
-					return
-		
-				
-				
+		for x in lel:
+			var present = randi() % 3
+			if present > 0:
+				add_route_indicators(x, nodesindexes)
 
+func add_route_indicators(lel, nodesindexes):
+	var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
+		
+	var piep = instance_from_id(testings[1])
+		
+	var allports = get_files("./portraits", "png")
+		
+		
+	for x in instance_from_id(testings[0]).neighbors:
+		var direction = null
+		var place = null
+		if x != piep:
+			piep.currentportrait = allports[randi() % allports.size()]
+			if x in nodesindexes: 
+				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
 
+				place = instance_from_id(testings[0]).realname
+				piep.directiontext = goodstorys[randi() % goodstorys.size()].format({"str": direction, "place": place})
+				return
+			else:
+				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
+
+				place = instance_from_id(testings[0]).realname
+				piep.directiontext = badstorys[randi() % badstorys.size()].format({"str": direction, "place": place})
+				return
 
 func get_splitnode_index(nodesindexes):
 	var splits = []
@@ -267,4 +273,3 @@ func longest_route():
 		longestnodes.append(instance_from_id(x))
 
 	return longestnodes
-		
