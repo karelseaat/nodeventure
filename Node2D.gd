@@ -7,7 +7,7 @@ var water = false
 var food = false
 var map  : Array = []
 var envstory = ""
-var enemy = false
+
 var home
 var player
 var environment
@@ -49,7 +49,7 @@ func _ready():
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
-	self.enemy = (randi() % 5) > 3
+#	self.enemy = (randi() % 5) > 3
 	self.realname = randname()
 
 
@@ -145,17 +145,12 @@ func _draw():
 		draw_connections()
 		draw_parts()
 		draw_player()
-#		draw_home()
 
 
 func draw_player():
 	if player and player.dead == false:
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
-#func draw_home():
-#	if home:
-#		var somecolor = Color(0.9, 0.9, 0.9, 1)
-#		draw_square(Vector2(0,0), 20, somecolor)
 
 func draw_connections():
 	if self.visiblelevel == 2:
@@ -186,29 +181,22 @@ func draw_parts():
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
-		draw_ball(offset1, 20, angle_from, angle_to, colordark)
-		draw_ball(offset1, 15, angle_from, angle_to, color)
+#		draw_ball(offset1, 20, angle_from, angle_to, colordark)
+#		draw_ball(offset1, 15, angle_from, angle_to, color)
 	
-	if self.water and self.visiblelevel == 2:
-		draw_ball(offset1, 15, angle_from, angle_to, watercolor)
-	
+	if self.visiblelevel == 2 and self.food:
+		$Sprite.visible = true
+#		draw_ball(offset1, 15, angle_from, angle_to, watercolor)
+	else:
+		$Sprite.visible = false
+#
 	if self.visiblelevel >= 1:	
-		draw_ball(offset2, 20, angle_from, angle_to, colordark)
-		draw_ball(offset2, 15, angle_from, angle_to, color)
-	if self.food and self.visiblelevel == 2:
-		draw_ball(offset2, 15, angle_from, angle_to, foodcolor)
-	
-	if self.visiblelevel >= 1:	
-		draw_ball(offset3, 20, angle_from, angle_to, colordark)
-		draw_ball(offset3, 15, angle_from, angle_to, color)
-	if self.enemy and self.visiblelevel == 2:
-		draw_ball(offset3, 15, angle_from, angle_to, enemycolor)
+		draw_ball(offset2, 30, angle_from, angle_to, colordark)
+		draw_ball(offset2, 25, angle_from, angle_to, color)
+
 
 func setplayer(player):
 	self.player = player
-
-#func sethome(home):
-#	self.home = home
 
 func moveplayer():
 	for x in neighbors:
@@ -217,17 +205,17 @@ func moveplayer():
 			x.player = null
 
 	if self.player and is_instance_valid(self.player):
-		if self.water and self.player.water <= self.player.maxwater:
-			self.player.water = self.player.maxwater
-		else:
-			self.player.water -= 1
+#		if self.water and self.player.water <= self.player.maxwater:
+#			self.player.water = self.player.maxwater
+#		else:
+#			self.player.water -= 1
 
 		if self.food and self.player.food <= self.player.maxfood:
 			self.player.food = self.player.maxfood
 		else:
 			self.player.food -= 1
 	
-		if self.player.food < 0 or self.player.water < 0:
+		if self.player.food < 0:
 			self.player.live -= 1
 		
 		if self.player.live == 0:
@@ -246,6 +234,5 @@ func clickit():
 	else:
 		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(null)
 	
-#	print(directiontext)
 	get_tree().root.get_child(0).get_child(2).get_child(2).text = directiontext
 

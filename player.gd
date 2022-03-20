@@ -1,10 +1,10 @@
 extends Node2D
 
 var food = 1
-var water = 1
+#var water = 1
 
 var maxfood = 1
-var maxwater = 1
+#var maxwater = 1
 var live = 3
 var dead = false
 

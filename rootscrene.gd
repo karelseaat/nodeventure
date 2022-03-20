@@ -15,6 +15,7 @@ var activeplayer = null
 var cam
 var astar = null
 var backgroundtextures =  []
+var allports = null
 
 var goodstorys = [
 	"Im qute sure that at {place} the {str} direction is a good path.",
@@ -101,6 +102,7 @@ func setcur(curr):
 	current = curr
 
 func _ready():
+	allports = get_files("./portraits", "png")
 	set_process(true)
 	for x in balls:
 		nodes.append(scene.instance())
@@ -154,17 +156,22 @@ func _process(delta):
 		var nodesindexes = longest_route()
 		var duplicate = nodesindexes.duplicate()
 		var klont = duplicate.pop_back()
-		klont.water = false
+
 		klont.food = false
 
 		nodesindexes[0].setplayer(player.instance())
+		
+		nodesindexes[0].currentportrait = allports[randi() % allports.size()]
+		nodesindexes[0].directiontext = "Dear prince, the armys of darkness are aprocing.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
+
+		nodesindexes[-1].currentportrait = allports[randi() % allports.size()]
+		nodesindexes[-1].directiontext = "Welcome to you new home nephew, you are save here.\nIt will take months befor the army of darkness will reach these parts of the land."
 
 		cam.target = nodesindexes[0]
 		var totals = route_resources(duplicate)
 		
 		for x in duplicate:
-			if neighborwater(x) == 0:
-				x.water = true
+
 
 			if neighborfood(x) == 0:
 				x.food = true
@@ -176,13 +183,14 @@ func _process(delta):
 			var present = randi() % 3
 			if present > 0:
 				add_route_indicators(x, nodesindexes)
+	
+		nodesindexes[0].clickit()
 
 func add_route_indicators(lel, nodesindexes):
 	var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
 		
 	var piep = instance_from_id(testings[1])
 		
-	var allports = get_files("./portraits", "png")
 		
 		
 	for x in instance_from_id(testings[0]).neighbors:
@@ -216,31 +224,31 @@ func neighborfood(node):
 		food += int(x.food)
 	return food
 
-func neighborwater(node):
-	var water = 0
-	for x in node.neighbors:
-		water += int(x.water)
-	return water
+#func neighborwater(node):
+#	var water = 0
+#	for x in node.neighbors:
+#		water += int(x.water)
+#	return water
 
-func enough_water(listonodes, totals):
-	var size = listonodes.size()
-	return totals[0] >= (size/2)
+#func enough_water(listonodes, totals):
+#	var size = listonodes.size()
+#	return totals[0] >= (size/2)
 		
 func enough_food(listonodes, totals):
 	var size = listonodes.size()
 	return totals[1] >= (size/2)
 
 func route_resources(listonodes):
-	var totalwater = 0
+#	var totalwater = 0
 	var totalfood = 0
 	var totalenemy = 0
 		
 	for x in listonodes:
-		totalwater += int(x.water)
+#		totalwater += int(x.water)
 		totalfood += int(x.food)
-		totalenemy += int(x.enemy)
+#		totalenemy += int(x.enemy)
 
-	return [totalwater, totalfood, totalenemy]
+	return [ totalfood, totalenemy]
 
 func longest_route():
 

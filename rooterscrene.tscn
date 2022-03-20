@@ -41,14 +41,6 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Food:"
 
-[node name="Water label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_top = 36.0
-margin_right = 3036.0
-margin_bottom = 50.0
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Water:"
-
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 smoothing_speed = 1.0

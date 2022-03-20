@@ -6,4 +6,3 @@ func _input_event(viewport, event, shape_idx):
 		get_parent().get_parent().get_parent().target = get_parent()
 		
 		get_parent().clickit()
-
