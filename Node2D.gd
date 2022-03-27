@@ -181,12 +181,10 @@ func draw_parts():
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
-#		draw_ball(offset1, 20, angle_from, angle_to, colordark)
-#		draw_ball(offset1, 15, angle_from, angle_to, color)
+
 	
 	if self.visiblelevel == 2 and self.food:
 		$Sprite.visible = true
-#		draw_ball(offset1, 15, angle_from, angle_to, watercolor)
 	else:
 		$Sprite.visible = false
 #
@@ -205,10 +203,6 @@ func moveplayer():
 			x.player = null
 
 	if self.player and is_instance_valid(self.player):
-#		if self.water and self.player.water <= self.player.maxwater:
-#			self.player.water = self.player.maxwater
-#		else:
-#			self.player.water -= 1
 
 		if self.food and self.player.food <= self.player.maxfood:
 			self.player.food = self.player.maxfood
@@ -223,16 +217,16 @@ func moveplayer():
 			self.player.killplayer()
 		
 func clickit():
-	get_tree().root.get_child(0).get_child(2).get_child(0).set_texture(currentbackground)
-	get_tree().root.get_child(0).get_child(2).get_child(0).scale = Vector2(1, 1)
+	get_tree().root.get_child(0).get_child(3).get_child(0).set_texture(currentbackground)
+	get_tree().root.get_child(0).get_child(3).get_child(0).scale = Vector2(1, 1)
 	
 	if is_instance_valid(currentportrait):
-		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(currentportrait)
-		get_tree().root.get_child(0).get_child(2).get_child(1).scale = Vector2(0.5, 0.5)
+		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(currentportrait)
+		get_tree().root.get_child(0).get_child(3).get_child(1).scale = Vector2(0.5, 0.5)
 		
 		
 	else:
-		get_tree().root.get_child(0).get_child(2).get_child(1).set_texture(null)
+		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(null)
 	
-	get_tree().root.get_child(0).get_child(2).get_child(2).text = directiontext
+	get_tree().root.get_child(0).get_child(3).get_child(2).text = directiontext
 

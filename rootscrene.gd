@@ -16,6 +16,8 @@ var cam
 var astar = null
 var backgroundtextures =  []
 var allports = null
+var canvas3 = null
+var startdone = false
 
 var goodstorys = [
 	"Im qute sure that at {place} the {str} direction is a good path.",
@@ -119,7 +121,8 @@ func _ready():
 		random_connect(x, 3)
 		x.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
 		
-	cam = get_tree().get_root().get_child(0).get_child(1)
+	cam = get_tree().get_root().get_child(0).get_child(2)
+	canvas3 = get_tree().get_root().get_child(0).get_child(0)
 
 func _process(delta):
 	
@@ -150,7 +153,11 @@ func _process(delta):
 	allscore = 0
 
 
-	if samecount > 500 and not simulationdone:
+	if samecount > 500 and not simulationdone and startdone:
+		canvas3.get_node("AnimationPlayer").stop()
+		canvas3.get_node("loadingsprite").hide()
+#		canvas3.get_node("AnimationPlayer").play("stop")
+		print("yes !")
 		simulationdone = true
 		set_process(false)
 		var nodesindexes = longest_route()
@@ -171,8 +178,6 @@ func _process(delta):
 		var totals = route_resources(duplicate)
 		
 		for x in duplicate:
-
-
 			if neighborfood(x) == 0:
 				x.food = true
 			totals = route_resources(duplicate)
