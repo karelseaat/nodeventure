@@ -9,7 +9,7 @@ var balls = 30
 var current
 var simulationdone = false
 var player = preload("res://player.tscn")
-#var home = preload("res://home.tscn")
+
 var totalcenter = Vector2()
 var activeplayer = null
 var cam
@@ -45,7 +45,6 @@ func get_files(dirpath: String, filter: String):
 		var path = dir.get_current_dir() + "/" + file_name
 		
 		if not dir.current_is_dir() and filter in  path.split(".")[-1]:
-#			print("Found file: %s" % path)
 			files.append(load(path))
 
 		file_name = dir.get_next()
@@ -156,8 +155,7 @@ func _process(delta):
 	if samecount > 500 and not simulationdone and startdone:
 		canvas3.get_node("AnimationPlayer").stop()
 		canvas3.get_node("loadingsprite").hide()
-#		canvas3.get_node("AnimationPlayer").play("stop")
-		print("yes !")
+
 		simulationdone = true
 		set_process(false)
 		var nodesindexes = longest_route()
@@ -173,6 +171,7 @@ func _process(delta):
 
 		nodesindexes[-1].currentportrait = allports[randi() % allports.size()]
 		nodesindexes[-1].directiontext = "Welcome to you new home nephew, you are save here.\nIt will take months befor the army of darkness will reach these parts of the land."
+		nodesindexes[-1].home = true
 
 		cam.target = nodesindexes[0]
 		var totals = route_resources(duplicate)
@@ -195,9 +194,7 @@ func add_route_indicators(lel, nodesindexes):
 	var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
 		
 	var piep = instance_from_id(testings[1])
-		
-		
-		
+
 	for x in instance_from_id(testings[0]).neighbors:
 		var direction = null
 		var place = null
@@ -229,29 +226,16 @@ func neighborfood(node):
 		food += int(x.food)
 	return food
 
-#func neighborwater(node):
-#	var water = 0
-#	for x in node.neighbors:
-#		water += int(x.water)
-#	return water
-
-#func enough_water(listonodes, totals):
-#	var size = listonodes.size()
-#	return totals[0] >= (size/2)
-		
 func enough_food(listonodes, totals):
 	var size = listonodes.size()
 	return totals[1] >= (size/2)
 
 func route_resources(listonodes):
-#	var totalwater = 0
 	var totalfood = 0
 	var totalenemy = 0
 		
 	for x in listonodes:
-#		totalwater += int(x.water)
 		totalfood += int(x.food)
-#		totalenemy += int(x.enemy)
 
 	return [ totalfood, totalenemy]
 
@@ -286,3 +270,7 @@ func longest_route():
 		longestnodes.append(instance_from_id(x))
 
 	return longestnodes
+	
+func endgame():
+	canvas3.get_node("AnimationPlayer").play("animatecontrolls")
+

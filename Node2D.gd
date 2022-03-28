@@ -8,7 +8,7 @@ var food = false
 var map  : Array = []
 var envstory = ""
 
-var home
+var home = false
 var player
 var environment
 var discovered = true
@@ -21,6 +21,7 @@ var visiblelevel = 0
 var parent = null
 var vibeplay = false
 var realname = ""
+var rootscene = null
 
 var names1 = ["Green", "Rose", "Skill", "Hellen", "Clam", "Winter", "Snow", "Oak", "Kings", "Queens", "Law"]
 var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "fields", "hills", "plain"]
@@ -49,7 +50,7 @@ func _ready():
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
-#	self.enemy = (randi() % 5) > 3
+	rootscene = get_tree().root.get_child(0).get_child(2).get_child(0)
 	self.realname = randname()
 
 
@@ -213,7 +214,6 @@ func moveplayer():
 			self.player.live -= 1
 		
 		if self.player.live == 0:
-			print("adstikke dood !")
 			self.player.killplayer()
 		
 func clickit():
@@ -227,6 +227,9 @@ func clickit():
 		
 	else:
 		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(null)
+	
+	if home:
+		rootscene.endgame()
 	
 	get_tree().root.get_child(0).get_child(3).get_child(2).text = directiontext
 
