@@ -249,3 +249,4 @@ __meta__ = {
 
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/StartButton" to="CanvasLayer3" method="_on_Button_pressed"]
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/QuitButton" to="CanvasLayer3" method="_on_Button4_pressed"]
+[connection signal="pressed" from="CanvasLayer3/MarginContainer2/CenterContainer/VBoxContainer/backtomain" to="CanvasLayer3" method="_on_backtomain_pressed"]
