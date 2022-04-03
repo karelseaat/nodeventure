@@ -16,7 +16,7 @@ var totalcenter = Vector2()
 var activeplayer = null
 var cam
 var astar = null
-var backgroundtextures =  []
+var backgroundtextures = []
 var allports = null
 var canvas3 = null
 var startdone = false
@@ -79,9 +79,10 @@ func random_connect(x, small):
 
 		x.add_neighbor(nodes[newindex])
 		nodes[newindex].add_neighbor(x)
+		
 		if x.startatpos:
-
 			x.position = nodes[newindex].position + (totalcenter.normalized() * 10)
+			
 		nodes[newindex].rootstart = true
 		x.rootstart = true
 		x.score = 0
@@ -147,12 +148,8 @@ func _process(delta):
 		set_process(false)
 		var nodesindexes = longest_route()
 		var duplicate = nodesindexes.duplicate()
-		var klont = duplicate.pop_back()
-
-		klont.food = false
 
 		nodesindexes[0].setplayer(player.instance())
-		
 		nodesindexes[0].currentportrait = allports[randi() % allports.size()]
 		nodesindexes[0].directiontext = "Dear prince, the armies of darkness are approaching.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
 
@@ -183,25 +180,25 @@ func hide_loading_screen():
 	canvas3.get_node("loadingsprite").hide()
 
 func add_route_indicators(lel, nodesindexes):
-	var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
+	var aStarNodes = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
 		
-	var piep = instance_from_id(testings[1])
+	var piep = instance_from_id(aStarNodes[1])
 
-	for x in instance_from_id(testings[0]).neighbors:
+	for neighbourNode in instance_from_id(aStarNodes[0]).neighbors:
 		var direction = null
 		var place = null
-		if x != piep:
+		if neighbourNode != piep:
 			piep.currentportrait = allports[randi() % allports.size()]
-			if x in nodesindexes: 
-				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
+			if neighbourNode in nodesindexes: 
+				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
 
-				place = instance_from_id(testings[0]).realname
+				place = instance_from_id(aStarNodes[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(true, randi(), direction, place)
 				return
 			else:
-				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
+				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
 
-				place = instance_from_id(testings[0]).realname
+				place = instance_from_id(aStarNodes[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(false, randi(), direction, place)
 				return
 
