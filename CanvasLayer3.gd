@@ -27,7 +27,7 @@ func _ready():
 
 
 func _on_Button_pressed():
-	$MarginContainer.hide()
+	$mainmenu.hide()
 	
 	$AnimationPlayer.play("loadingplay")
 	$loadingsprite.show()
