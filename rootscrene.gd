@@ -1,5 +1,7 @@
 extends Node2D
 
+var DirectionTextGen = preload("res://DirectionTextGenerator.gd").new()
+
 var scene = preload("res://travel_nodes/travelnode.tscn")
 var nodes = []
 var allscore = 0
@@ -18,20 +20,6 @@ var backgroundtextures =  []
 var allports = null
 var canvas3 = null
 var startdone = false
-
-var goodstorys = [
-	"I'm quite sure that at {place} the {str} direction is a good path.",
-	"I saw people traveling on the {str} path from {place}. Must be a good one!",
-	"My parents told me that there is a trading route on the {str} path at {place}.",
-	"I always go to the market via the {str} at the {place} split."
-]
-
-var badstorys = [
-	"Don't take the {str} path at {place}, because it leads to nowhere!",
-	"I saw no one return from the {str} path on the {place} split.",
-	"Adventurers have traveled the {str} path at {place}, but they said there is noting find there.",
-	"The people that traveled the {str} path at {place} didn't return at all. Beware!"
-]
 
 func get_files(dirpath: String, filter: String):
 	var dir = Directory.new()
@@ -208,13 +196,13 @@ func add_route_indicators(lel, nodesindexes):
 				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
 
 				place = instance_from_id(testings[0]).realname
-				piep.directiontext = goodstorys[randi() % goodstorys.size()].format({"str": direction, "place": place})
+				piep.directiontext = DirectionTextGen.createStory(true, randi(), direction, place)
 				return
 			else:
 				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
 
 				place = instance_from_id(testings[0]).realname
-				piep.directiontext = badstorys[randi() % badstorys.size()].format({"str": direction, "place": place})
+				piep.directiontext = DirectionTextGen.createStory(false, randi(), direction, place)
 				return
 
 func get_splitnode_index(nodesindexes):

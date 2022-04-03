@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://rootscrene.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Camera2D.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://fonts/Florida Project Phase One.otf" type="DynamicFontData" id=6]
 [ext_resource path="res://CanvasLayer3.gd" type="Script" id=7]
 [ext_resource path="res://hourglass-36.svg" type="Texture" id=8]
+[ext_resource path="res://DirectionTextGenerator.gd" type="Script" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -246,6 +247,9 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="DirectionTextGenerator" type="Node2D" parent="."]
+script = ExtResource( 9 )
 
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/StartButton" to="CanvasLayer3" method="_on_Button_pressed"]
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/QuitButton" to="CanvasLayer3" method="_on_Button4_pressed"]

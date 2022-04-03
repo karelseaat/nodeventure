@@ -1,7 +1,6 @@
 extends Node2D
 
-const cityNameGenClass = preload("res://travel_nodes/CityNameGenerator.gd")
-var cityNameGen = cityNameGenClass.new()
+var cityNameGen = preload("res://travel_nodes/CityNameGenerator.gd").new()
 
 var neighbors : Array = []
 var allballs : Array = []
@@ -179,7 +178,7 @@ func draw_parts():
 	else:
 		$Sprite.visible = false
 #
-	if self.visiblelevel >= 1:	
+	if self.visiblelevel >= 1:
 		draw_ball(offset2, 30, angle_from, angle_to, colordark)
 		draw_ball(offset2, 25, angle_from, angle_to, color)
 
