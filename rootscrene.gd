@@ -153,8 +153,7 @@ func _process(delta):
 
 
 	if samecount > 500 and not simulationdone and startdone:
-		canvas3.get_node("AnimationPlayer").stop()
-		canvas3.get_node("loadingsprite").hide()
+		hide_loading_screen()
 
 		simulationdone = true
 		set_process(false)
@@ -189,6 +188,11 @@ func _process(delta):
 				add_route_indicators(x, nodesindexes)
 	
 		nodesindexes[0].clickit()
+		
+func hide_loading_screen():
+	canvas3.get_node("backgroundsprite").hide()
+	canvas3.get_node("AnimationPlayer").stop()
+	canvas3.get_node("loadingsprite").hide()
 
 func add_route_indicators(lel, nodesindexes):
 	var testings = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
