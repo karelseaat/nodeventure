@@ -24,8 +24,11 @@ var parent = null
 var vibeplay = false
 var realname = ""
 var rootscene = null
+var backscene = null
+var label = null
+var sprite = null
+var animationplayer = null
 
-var textures = [preload("portrait1.png"), preload("portrait2.png")]
 var directiontext = ""
 
 var somecolor = Color(0.9, 0.9, 0.9, 1)
@@ -36,6 +39,10 @@ var currentportrait = null
 
 
 func _ready():
+	label = $Label
+	sprite = $Sprite
+	animationplayer = $AnimationPlayer
+	backscene = get_tree().root.get_child(0).get_child(3)
 	randomize()
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
@@ -49,12 +56,12 @@ func _process(delta):
 	
 	if self.vibeplay and not self.player:
 		self.vibeplay = false
-		$AnimationPlayer.play("stop")
+		animationplayer.play("stop")
 	
 	if self.player and is_instance_valid(self.player):
 		if not self.vibeplay:
 			self.vibeplay = true
-			$AnimationPlayer.play("vibe")
+			animationplayer.play("vibe")
 		self.get_parent().activeplayer = player
 		self.visiblelevel = 2
 		for x in self.neighbors:
@@ -131,7 +138,6 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 	
 func _draw():
 	if self.discovered:
-		
 		draw_connections()
 		draw_parts()
 		draw_player()
@@ -141,11 +147,9 @@ func draw_player():
 	if player and player.dead == false:
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
-
 func draw_connections():
 	if self.visiblelevel == 2:
 		var color = Color(0.1, 0.1, 0.1, 1)
-
 		for x in neighbors:
 			var dist = x.transform[2].distance_to(self.transform[2]) - 80
 			var angle = x.transform[2].angle_to_point(self.transform[2])
@@ -160,23 +164,20 @@ func draw_parts():
 	var radius = 80
 	var angle_from = 0
 	var angle_to = 360
-
 	var color = Color(0.4, 0.4, 0.4, 1)
 	var watercolor = Color(0, 0.5, 1, 1)
 	var foodcolor = Color(0.5, 0.5, 0.2 ,1)
 	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
 
 	if self.visiblelevel >= 1:
-		$Label.text = self.realname
+		label.text = self.realname
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
-
-	
 	if self.visiblelevel == 2 and self.food:
-		$Sprite.visible = true
+		sprite.visible = true
 	else:
-		$Sprite.visible = false
+		sprite.visible = false
 #
 	if self.visiblelevel >= 1:
 		draw_ball(offset2, 30, angle_from, angle_to, colordark)
@@ -193,7 +194,6 @@ func moveplayer():
 			x.player = null
 
 	if self.player and is_instance_valid(self.player):
-
 		if self.food and self.player.food <= self.player.maxfood:
 			self.player.food = self.player.maxfood
 		else:
@@ -206,19 +206,16 @@ func moveplayer():
 			self.player.killplayer()
 		
 func clickit():
-	get_tree().root.get_child(0).get_child(3).get_child(0).set_texture(currentbackground)
-	get_tree().root.get_child(0).get_child(3).get_child(0).scale = Vector2(1, 1)
+	backscene.get_child(0).set_texture(currentbackground)
+	backscene.get_child(0).scale = Vector2(1, 1)
 	
 	if is_instance_valid(currentportrait):
-		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(currentportrait)
-		get_tree().root.get_child(0).get_child(3).get_child(1).scale = Vector2(0.5, 0.5)
-		
-		
+		backscene.get_child(1).set_texture(currentportrait)
+		backscene.get_child(1).scale = Vector2(0.5, 0.5)
 	else:
-		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(null)
+		backscene.get_child(1).set_texture(null)
 	
 	if home:
 		rootscene.endgame()
-	
-	get_tree().root.get_child(0).get_child(3).get_child(2).text = directiontext
+	backscene.get_child(2).text = directiontext
 

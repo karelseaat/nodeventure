@@ -14,7 +14,7 @@ var player = preload("res://player.tscn")
 
 var totalcenter = Vector2()
 var activeplayer = null
-var cam
+var cam = null
 var astar = null
 var backgroundtextures = []
 var allports = null
@@ -92,11 +92,13 @@ func setcur(curr):
 	current = curr
 
 func _ready():
+	cam = get_tree().get_root().get_child(0).get_child(2)
+	canvas3 = get_tree().get_root().get_child(0).get_child(0)
+	
 	allports = get_files("./portraits", "png")
 	set_process(true)
 	for x in balls:
 		nodes.append(scene.instance())
-
 
 	backgroundtextures = get_files("./landscapes", "png")
 
@@ -108,9 +110,7 @@ func _ready():
 	for x in nodes:
 		random_connect(x, 3)
 		x.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
-		
-	cam = get_tree().get_root().get_child(0).get_child(2)
-	canvas3 = get_tree().get_root().get_child(0).get_child(0)
+
 
 func _process(delta):
 	
@@ -191,13 +191,11 @@ func add_route_indicators(lel, nodesindexes):
 			piep.currentportrait = allports[randi() % allports.size()]
 			if neighbourNode in nodesindexes: 
 				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
-
 				place = instance_from_id(aStarNodes[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(true, randi(), direction, place)
 				return
 			else:
 				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
-
 				place = instance_from_id(aStarNodes[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(false, randi(), direction, place)
 				return
@@ -222,14 +220,11 @@ func enough_food(listonodes, totals):
 func route_resources(listonodes):
 	var totalfood = 0
 	var totalenemy = 0
-		
 	for x in listonodes:
 		totalfood += int(x.food)
-
 	return [ totalfood, totalenemy]
 
 func longest_route():
-
 	astar = AStar2D.new()
 	for x in nodes:
 		astar.add_point(x.get_instance_id(), x.position)
@@ -247,7 +242,6 @@ func longest_route():
 			endnodes.append(x)
 			
 	for x in range(10):
-
 		var start = randi() % endnodes.size()
 		var end = randi() % endnodes.size() 
 		var temppath = astar.get_id_path(endnodes[start].get_instance_id(), endnodes[end].get_instance_id())
@@ -262,4 +256,3 @@ func longest_route():
 	
 func endgame():
 	canvas3.get_node("AnimationPlayer").play("animatecontrolls")
-
