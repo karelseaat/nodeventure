@@ -28,7 +28,7 @@ font_data = ExtResource( 6 )
 [sub_resource type="Animation" id=5]
 resource_name = "animatecontrolls"
 tracks/0/type = "value"
-tracks/0/path = NodePath("MarginContainer:modulate")
+tracks/0/path = NodePath("mainmenu:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -106,30 +106,30 @@ position = Vector2( 755.15, 375.002 )
 scale = Vector2( 0.793232, 0.707847 )
 texture = ExtResource( 4 )
 
-[node name="MarginContainer" type="MarginContainer" parent="menulayer"]
+[node name="mainmenu" type="MarginContainer" parent="menulayer"]
 margin_right = 1515.0
 margin_bottom = 747.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="menulayer/MarginContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="menulayer/mainmenu"]
 margin_right = 1515.0
 margin_bottom = 747.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="menulayer/MarginContainer/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="menulayer/mainmenu/CenterContainer"]
 margin_left = 715.0
 margin_top = 329.0
 margin_right = 800.0
 margin_bottom = 417.0
 
-[node name="StartButton" type="Button" parent="menulayer/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="menulayer/mainmenu/CenterContainer/VBoxContainer"]
 margin_right = 85.0
 margin_bottom = 42.0
 custom_fonts/font = SubResource( 1 )
 text = "Start"
 
-[node name="QuitButton" type="Button" parent="menulayer/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="menulayer/mainmenu/CenterContainer/VBoxContainer"]
 margin_top = 46.0
 margin_right = 85.0
 margin_bottom = 88.0
@@ -189,7 +189,7 @@ script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="gamelayer"]
 
-[node name="MarginContainer" type="MarginContainer" parent="gamelayer"]
+[node name="ui" type="MarginContainer" parent="gamelayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -197,18 +197,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="gamelayer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="gamelayer/ui"]
 margin_right = 3036.0
 margin_bottom = 1504.0
 mouse_filter = 2
 
-[node name="Live label" type="Label" parent="gamelayer/MarginContainer/VBoxContainer"]
+[node name="LiveLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
 margin_right = 3036.0
 margin_bottom = 14.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 
-[node name="Food label" type="Label" parent="gamelayer/MarginContainer/VBoxContainer"]
+[node name="FoodLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
 margin_top = 18.0
 margin_right = 3036.0
 margin_bottom = 32.0
@@ -247,6 +247,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="menulayer/MarginContainer/CenterContainer/VBoxContainer/StartButton" to="menulayer" method="_on_Button_pressed"]
-[connection signal="pressed" from="menulayer/MarginContainer/CenterContainer/VBoxContainer/QuitButton" to="menulayer" method="_on_Button4_pressed"]
+[connection signal="pressed" from="menulayer/mainmenu/CenterContainer/VBoxContainer/StartButton" to="menulayer" method="_on_Button_pressed"]
+[connection signal="pressed" from="menulayer/mainmenu/CenterContainer/VBoxContainer/QuitButton" to="menulayer" method="_on_Button4_pressed"]
 [connection signal="pressed" from="menulayer/MarginContainer2/CenterContainer/VBoxContainer/backtomain" to="menulayer" method="_on_backtomain_pressed"]

@@ -2,16 +2,13 @@ extends CanvasLayer
 
 var player
 var live
-#var water
 var food
 var rootscene
 
 func _ready():
-	food = $"MarginContainer/VBoxContainer/Food label"
-	live  = $"MarginContainer/VBoxContainer/Live label"
-	
+	food = $"ui/VBoxContainer/FoodLabel"
+	live  = $"ui/VBoxContainer/LiveLabel"
 	rootscene = get_tree().root.get_child(0).get_child(2).get_child(0)
-	
 	set_process(true)
 #
 func _process(delta):
