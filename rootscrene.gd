@@ -96,7 +96,6 @@ func _ready():
 	for x in balls:
 		nodes.append(scene.instance())
 
-
 	backgroundtextures = get_files("./landscapes", "png")
 
 	nodes[0].rootstart = true
@@ -194,13 +193,11 @@ func add_route_indicators(lel, nodesindexes):
 			piep.currentportrait = allports[randi() % allports.size()]
 			if x in nodesindexes: 
 				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
-
 				place = instance_from_id(testings[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(true, randi(), direction, place)
 				return
 			else:
 				direction =  getdirection(instance_from_id(testings[0]).position, x.position)
-
 				place = instance_from_id(testings[0]).realname
 				piep.directiontext = DirectionTextGen.createStory(false, randi(), direction, place)
 				return
@@ -225,14 +222,11 @@ func enough_food(listonodes, totals):
 func route_resources(listonodes):
 	var totalfood = 0
 	var totalenemy = 0
-		
 	for x in listonodes:
 		totalfood += int(x.food)
-
 	return [ totalfood, totalenemy]
 
 func longest_route():
-
 	astar = AStar2D.new()
 	for x in nodes:
 		astar.add_point(x.get_instance_id(), x.position)
@@ -250,7 +244,6 @@ func longest_route():
 			endnodes.append(x)
 			
 	for x in range(10):
-
 		var start = randi() % endnodes.size()
 		var end = randi() % endnodes.size() 
 		var temppath = astar.get_id_path(endnodes[start].get_instance_id(), endnodes[end].get_instance_id())

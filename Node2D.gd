@@ -25,7 +25,6 @@ var vibeplay = false
 var realname = ""
 var rootscene = null
 
-var textures = [preload("portrait1.png"), preload("portrait2.png")]
 var directiontext = ""
 
 var somecolor = Color(0.9, 0.9, 0.9, 1)
@@ -131,7 +130,6 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 	
 func _draw():
 	if self.discovered:
-		
 		draw_connections()
 		draw_parts()
 		draw_player()
@@ -141,11 +139,9 @@ func draw_player():
 	if player and player.dead == false:
 		draw_ball(Vector2(0,0), 40, 0, 360, somecolor)
 
-
 func draw_connections():
 	if self.visiblelevel == 2:
 		var color = Color(0.1, 0.1, 0.1, 1)
-
 		for x in neighbors:
 			var dist = x.transform[2].distance_to(self.transform[2]) - 80
 			var angle = x.transform[2].angle_to_point(self.transform[2])
@@ -160,7 +156,6 @@ func draw_parts():
 	var radius = 80
 	var angle_from = 0
 	var angle_to = 360
-
 	var color = Color(0.4, 0.4, 0.4, 1)
 	var watercolor = Color(0, 0.5, 1, 1)
 	var foodcolor = Color(0.5, 0.5, 0.2 ,1)
@@ -171,8 +166,6 @@ func draw_parts():
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
-
-	
 	if self.visiblelevel == 2 and self.food:
 		$Sprite.visible = true
 	else:
@@ -193,7 +186,6 @@ func moveplayer():
 			x.player = null
 
 	if self.player and is_instance_valid(self.player):
-
 		if self.food and self.player.food <= self.player.maxfood:
 			self.player.food = self.player.maxfood
 		else:
@@ -212,13 +204,10 @@ func clickit():
 	if is_instance_valid(currentportrait):
 		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(currentportrait)
 		get_tree().root.get_child(0).get_child(3).get_child(1).scale = Vector2(0.5, 0.5)
-		
-		
 	else:
 		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(null)
 	
 	if home:
 		rootscene.endgame()
-	
 	get_tree().root.get_child(0).get_child(3).get_child(2).text = directiontext
 
