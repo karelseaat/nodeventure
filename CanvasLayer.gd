@@ -6,8 +6,8 @@ var food
 var rootscene
 
 func _ready():
-	food = $"ui/VBoxContainer/FoodLabel"
-	live  = $"ui/VBoxContainer/LiveLabel"
+	food = $ui/VBoxContainer/FoodLabel
+	live  = $ui/VBoxContainer/LiveLabel
 	rootscene = get_tree().root.get_child(0).get_child(2).get_child(0)
 	set_process(true)
 #

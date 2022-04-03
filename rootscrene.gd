@@ -14,7 +14,7 @@ var player = preload("res://player.tscn")
 
 var totalcenter = Vector2()
 var activeplayer = null
-var cam
+var cam = null
 var astar = null
 var backgroundtextures =  []
 var allports = null
@@ -91,6 +91,9 @@ func setcur(curr):
 	current = curr
 
 func _ready():
+	cam = get_tree().get_root().get_child(0).get_child(2)
+	canvas3 = get_tree().get_root().get_child(0).get_child(0)
+	
 	allports = get_files("./portraits", "png")
 	set_process(true)
 	for x in balls:
@@ -106,9 +109,7 @@ func _ready():
 	for x in nodes:
 		random_connect(x, 3)
 		x.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
-		
-	cam = get_tree().get_root().get_child(0).get_child(2)
-	canvas3 = get_tree().get_root().get_child(0).get_child(0)
+
 
 func _process(delta):
 	

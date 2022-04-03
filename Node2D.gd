@@ -24,6 +24,10 @@ var parent = null
 var vibeplay = false
 var realname = ""
 var rootscene = null
+var backscene = null
+var label = null
+var sprite = null
+var animationplayer = null
 
 var directiontext = ""
 
@@ -35,6 +39,10 @@ var currentportrait = null
 
 
 func _ready():
+	label = $Label
+	sprite = $Sprite
+	animationplayer = $Animationplayer
+	backscene = get_tree().root.get_child(0).get_child(3)
 	randomize()
 	if not startatpos:
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
@@ -48,12 +56,12 @@ func _process(delta):
 	
 	if self.vibeplay and not self.player:
 		self.vibeplay = false
-		$AnimationPlayer.play("stop")
+		animationplayer.play("stop")
 	
 	if self.player and is_instance_valid(self.player):
 		if not self.vibeplay:
 			self.vibeplay = true
-			$AnimationPlayer.play("vibe")
+			animationplayer.play("vibe")
 		self.get_parent().activeplayer = player
 		self.visiblelevel = 2
 		for x in self.neighbors:
@@ -162,14 +170,14 @@ func draw_parts():
 	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
 
 	if self.visiblelevel >= 1:
-		$Label.text = self.realname
+		label.text = self.realname
 		draw_ball(Vector2(0,0), radius+5, angle_from, angle_to, colordark)
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
 	if self.visiblelevel == 2 and self.food:
-		$Sprite.visible = true
+		sprite.visible = true
 	else:
-		$Sprite.visible = false
+		sprite.visible = false
 #
 	if self.visiblelevel >= 1:
 		draw_ball(offset2, 30, angle_from, angle_to, colordark)
@@ -198,16 +206,16 @@ func moveplayer():
 			self.player.killplayer()
 		
 func clickit():
-	get_tree().root.get_child(0).get_child(3).get_child(0).set_texture(currentbackground)
-	get_tree().root.get_child(0).get_child(3).get_child(0).scale = Vector2(1, 1)
+	backscene.get_child(0).set_texture(currentbackground)
+	backscene.get_child(0).scale = Vector2(1, 1)
 	
 	if is_instance_valid(currentportrait):
-		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(currentportrait)
-		get_tree().root.get_child(0).get_child(3).get_child(1).scale = Vector2(0.5, 0.5)
+		backscene.get_child(1).set_texture(currentportrait)
+		backscene.get_child(1).scale = Vector2(0.5, 0.5)
 	else:
-		get_tree().root.get_child(0).get_child(3).get_child(1).set_texture(null)
+		backscene.get_child(1).set_texture(null)
 	
 	if home:
 		rootscene.endgame()
-	get_tree().root.get_child(0).get_child(3).get_child(2).text = directiontext
+	backscene.get_child(2).text = directiontext
 
