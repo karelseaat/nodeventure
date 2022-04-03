@@ -18,3 +18,4 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 
 func killplayer():
 	self.dead = true
+	print("you are dead !")

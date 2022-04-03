@@ -3,7 +3,6 @@ extends Camera2D
 var target = self
 var speed = 5
 var level = 1
-
 export var zoom_factor := 0.1
 
 func _ready():

@@ -3,14 +3,16 @@ extends Node2D
 var DirectionTextGen = preload("res://DirectionTextGenerator.gd").new()
 
 var scene = preload("res://travel_nodes/travelnode.tscn")
+var player = preload("res://player.tscn")
+
 var nodes = []
 var allscore = 0
 var oldscore = 0
 var samecount = 0
 var balls = 30
-var current
+#var current
 var simulationdone = false
-var player = preload("res://player.tscn")
+
 
 var totalcenter = Vector2()
 var activeplayer = null
@@ -73,7 +75,6 @@ func random_choice(x, smal):
 	return choice
 	
 func random_connect(x, small):
-
 	var newindex = random_choice(x, small)
 	if newindex <= nodes.size()-1:
 
@@ -85,11 +86,9 @@ func random_connect(x, small):
 			
 		nodes[newindex].rootstart = true
 		x.rootstart = true
-		x.score = 0
-		nodes[newindex].score = 0 
+		x.nodesettlescore = 0
+		nodes[newindex].nodesettlescore = 0 
 
-func setcur(curr):
-	current = curr
 
 func _ready():
 	cam = get_tree().get_root().get_child(0).get_child(2)
@@ -132,7 +131,7 @@ func _process(delta):
 		random_connect(nodes[-1], 2)
 
 	for x in nodes:
-		allscore += x.score
+		allscore += x.nodesettlescore
 		
 	if oldscore == allscore:
 		samecount += 1
@@ -143,7 +142,6 @@ func _process(delta):
 
 	if samecount > 500 and not simulationdone and startdone:
 		hide_loading_screen()
-
 		simulationdone = true
 		set_process(false)
 		var nodesindexes = longest_route()
@@ -182,23 +180,18 @@ func hide_loading_screen():
 func add_route_indicators(lel, nodesindexes):
 	var aStarNodes = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
 		
-	var piep = instance_from_id(aStarNodes[1])
+	var anode = instance_from_id(aStarNodes[1])
 
 	for neighbourNode in instance_from_id(aStarNodes[0]).neighbors:
 		var direction = null
 		var place = null
-		if neighbourNode != piep:
-			piep.currentportrait = allports[randi() % allports.size()]
-			if neighbourNode in nodesindexes: 
-				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
-				place = instance_from_id(aStarNodes[0]).realname
-				piep.directiontext = DirectionTextGen.createStory(true, randi(), direction, place)
-				return
-			else:
-				direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
-				place = instance_from_id(aStarNodes[0]).realname
-				piep.directiontext = DirectionTextGen.createStory(false, randi(), direction, place)
-				return
+		if neighbourNode != anode:
+			anode.currentportrait = allports[randi() % allports.size()]
+			direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
+			place = instance_from_id(aStarNodes[0]).realname
+			anode.directiontext = DirectionTextGen.createStory(neighbourNode in nodesindexes, randi(), direction, place)
+			return
+
 
 func get_splitnode_index(nodesindexes):
 	var splits = []
@@ -215,14 +208,13 @@ func neighborfood(node):
 
 func enough_food(listonodes, totals):
 	var size = listonodes.size()
-	return totals[1] >= (size/2)
+	return totals >= (size/2)
 
 func route_resources(listonodes):
 	var totalfood = 0
-	var totalenemy = 0
 	for x in listonodes:
 		totalfood += int(x.food)
-	return [ totalfood, totalenemy]
+	return totalfood
 
 func longest_route():
 	astar = AStar2D.new()

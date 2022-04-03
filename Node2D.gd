@@ -5,23 +5,19 @@ var cityNameGen = preload("res://travel_nodes/CityNameGenerator.gd").new()
 var neighbors : Array = []
 var allballs : Array = []
 
-var water = false
 var food = false
-var map  : Array = []
-var envstory = ""
 
 var home = false
 var player
-var environment
 var discovered = true
 var center = Vector2(0,0)
 var avgcenter
-var score = 1
+var nodesettlescore = 1
 var rootstart = false
 var startatpos = false
 var visiblelevel = 0
 var parent = null
-var vibeplay = false
+var nodepulseplay = false
 var realname = ""
 var rootscene = null
 var backscene = null
@@ -29,16 +25,17 @@ var label = null
 var sprite = null
 var animationplayer = null
 
-var directiontext = ""
-
+var color = Color(0.4, 0.4, 0.4, 1)
 var somecolor = Color(0.9, 0.9, 0.9, 1)
 var colordark = Color(0.1, 0.1, 0.1, 1)
 
+var directiontext = ""
 var currentbackground = null
 var currentportrait = null
 
 
 func _ready():
+
 	label = $Label
 	sprite = $Sprite
 	animationplayer = $AnimationPlayer
@@ -54,13 +51,13 @@ func _ready():
 func _process(delta):
 	var speed = 5
 	
-	if self.vibeplay and not self.player:
-		self.vibeplay = false
+	if self.nodepulseplay and not self.player:
+		self.nodepulseplay = false
 		animationplayer.play("stop")
 	
 	if self.player and is_instance_valid(self.player):
-		if not self.vibeplay:
-			self.vibeplay = true
+		if not self.nodepulseplay:
+			self.nodepulseplay = true
 			animationplayer.play("vibe")
 		self.get_parent().activeplayer = player
 		self.visiblelevel = 2
@@ -68,7 +65,6 @@ func _process(delta):
 			if x.visiblelevel < 1:
 				x.visiblelevel = 1
 
-	
 	for x in allballs:
 		var distance = self.position.distance_to(x.position)
 		if distance < 250:
@@ -77,11 +73,11 @@ func _process(delta):
 	for x in neighbors:
 		var distance = self.position.distance_to(x.position)
 		if distance > 350:
-			score += 1
+			nodesettlescore += 1
 
 			position = position.move_toward(x.position, delta * (distance + speed))
 
-	if score > 23 and neighbors.size() <= 2:
+	if nodesettlescore > 23 and neighbors.size() <= 2:
 
 		remove_neighbors()
 		allballs.erase(self)
@@ -135,7 +131,6 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color, width):
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width+1)
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color, width+3)
 	
-	
 func _draw():
 	if self.discovered:
 		draw_connections()
@@ -164,10 +159,6 @@ func draw_parts():
 	var radius = 80
 	var angle_from = 0
 	var angle_to = 360
-	var color = Color(0.4, 0.4, 0.4, 1)
-	var watercolor = Color(0, 0.5, 1, 1)
-	var foodcolor = Color(0.5, 0.5, 0.2 ,1)
-	var enemycolor = Color(0.5, 0.1, 0.1 ,1)
 
 	if self.visiblelevel >= 1:
 		label.text = self.realname
