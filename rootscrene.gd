@@ -1,6 +1,6 @@
 extends Node2D
 
-var scene = preload("res://travelnode.tscn")
+var scene = preload("res://travel_nodes/travelnode.tscn")
 var nodes = []
 var allscore = 0
 var oldscore = 0

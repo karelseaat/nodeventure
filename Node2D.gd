@@ -1,6 +1,6 @@
 extends Node2D
 
-const cityNameGenClass = preload("res://CityNameGenerator.gd")
+const cityNameGenClass = preload("res://travel_nodes/CityNameGenerator.gd")
 var cityNameGen = cityNameGenClass.new()
 
 var neighbors : Array = []
@@ -34,7 +34,6 @@ var colordark = Color(0.1, 0.1, 0.1, 1)
 
 var currentbackground = null
 var currentportrait = null
-
 
 
 func _ready():
