@@ -52,7 +52,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("MarginContainer2/CenterContainer/VBoxContainer/Button:mouse_filter")
+tracks/2/path = NodePath("MarginContainer2/CenterContainer/VBoxContainer/backtomain:mouse_filter")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -164,7 +164,7 @@ custom_fonts/font = SubResource( 3 )
 text = "You made it to your uncle and aunt, you are save for now.
 you survived a perilour travvel trough the lands."
 
-[node name="Button" type="Button" parent="CanvasLayer3/MarginContainer2/CenterContainer/VBoxContainer"]
+[node name="backtomain" type="Button" parent="CanvasLayer3/MarginContainer2/CenterContainer/VBoxContainer"]
 margin_top = 79.0
 margin_right = 759.0
 margin_bottom = 121.0
@@ -249,3 +249,4 @@ __meta__ = {
 
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/StartButton" to="CanvasLayer3" method="_on_Button_pressed"]
 [connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/QuitButton" to="CanvasLayer3" method="_on_Button4_pressed"]
+[connection signal="pressed" from="CanvasLayer3/MarginContainer2/CenterContainer/VBoxContainer/backtomain" to="CanvasLayer3" method="_on_backtomain_pressed"]
