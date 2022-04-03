@@ -27,7 +27,6 @@ func _ready():
 
 
 func _on_Button_pressed():
-	$backgroundsprite.hide()
 	$MarginContainer.hide()
 	
 	$AnimationPlayer.play("loadingplay")

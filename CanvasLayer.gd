@@ -15,8 +15,6 @@ func _ready():
 	set_process(true)
 #
 func _process(delta):
-
-
 	if rootscene.simulationdone and is_instance_valid(rootscene.activeplayer):
 		food.text = "Food: " + String(rootscene.activeplayer.food)
 		live.text = "Live: " + String(rootscene.activeplayer.live)
