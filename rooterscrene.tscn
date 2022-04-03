@@ -17,15 +17,15 @@ font_data = ExtResource( 5 )
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=3]
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=4]
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=5]
 resource_name = "animatecontrolls"
 tracks/0/type = "value"
 tracks/0/path = NodePath("MarginContainer:modulate")
@@ -64,8 +64,7 @@ tracks/2/keys = {
 "values": [ 2, 0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "loadingplay"
+[sub_resource type="Animation" id=6]
 loop = true
 step = 0.05
 tracks/0/type = "value"
@@ -81,8 +80,7 @@ tracks/0/keys = {
 "values": [ 0.0, 360.0 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "stopplay"
+[sub_resource type="Animation" id=7]
 tracks/0/type = "value"
 tracks/0/path = NodePath("loadingsprite:scale")
 tracks/0/interp = 1
@@ -96,7 +94,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0.2, 0.2 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="NoiseTexture" id=5]
+[sub_resource type="NoiseTexture" id=8]
 
 [node name="Node2D" type="Node2D"]
 
@@ -125,18 +123,48 @@ margin_top = 329.0
 margin_right = 800.0
 margin_bottom = 417.0
 
-[node name="Button" type="Button" parent="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer"]
 margin_right = 85.0
 margin_bottom = 42.0
 custom_fonts/font = SubResource( 1 )
 text = "Start"
 
-[node name="Button4" type="Button" parent="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer"]
 margin_top = 46.0
 margin_right = 85.0
 margin_bottom = 88.0
 custom_fonts/font = SubResource( 2 )
 text = "Quit"
+
+[node name="LoadingBarContainer" type="MarginContainer" parent="CanvasLayer3"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+margin_right = 1523.0
+margin_bottom = 760.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer3/LoadingBarContainer"]
+margin_right = 1523.0
+margin_bottom = 760.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer3/LoadingBarContainer/CenterContainer"]
+margin_left = 700.0
+margin_top = 362.0
+margin_right = 822.0
+margin_bottom = 398.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer3/LoadingBarContainer/CenterContainer/VBoxContainer"]
+margin_right = 122.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 3 )
+text = "Loading..."
+align = 1
+valign = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer3"]
 modulate = Color( 1, 1, 1, 0 )
@@ -162,7 +190,7 @@ mouse_filter = 2
 [node name="Label" type="Label" parent="CanvasLayer3/MarginContainer2/CenterContainer/VBoxContainer"]
 margin_right = 759.0
 margin_bottom = 75.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 3 )
 text = "You made it to your uncle and aunt, you are save for now.
 you survived a perilour travvel trough the lands."
 
@@ -171,19 +199,20 @@ margin_top = 79.0
 margin_right = 759.0
 margin_bottom = 121.0
 mouse_filter = 2
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 4 )
 text = "Back to main menu!"
 
 [node name="loadingsprite" type="Sprite" parent="CanvasLayer3"]
 visible = false
 position = Vector2( 790.225, 368.416 )
+rotation = 5.64218
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer3"]
-anims/animatecontrolls = SubResource( 7 )
-anims/loadingplay = SubResource( 3 )
-anims/stopplay = SubResource( 4 )
+anims/animatecontrolls = SubResource( 5 )
+anims/loadingplay = SubResource( 6 )
+anims/stopplay = SubResource( 7 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource( 3 )
@@ -208,7 +237,6 @@ margin_right = 3036.0
 margin_bottom = 14.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Live:"
 
 [node name="Food label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 margin_top = 18.0
@@ -216,7 +244,6 @@ margin_right = 3036.0
 margin_bottom = 32.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Food:"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -230,7 +257,7 @@ layer = -1
 
 [node name="Sprite2" type="Sprite" parent="CanvasLayer2"]
 scale = Vector2( 5.78701, 2.93465 )
-texture = SubResource( 5 )
+texture = SubResource( 8 )
 centered = false
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer2"]
@@ -250,5 +277,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/Button" to="CanvasLayer3" method="_on_Button_pressed"]
-[connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/Button4" to="CanvasLayer3" method="_on_Button4_pressed"]
+[connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/StartButton" to="CanvasLayer3" method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer3/MarginContainer/CenterContainer/VBoxContainer/QuitButton" to="CanvasLayer3" method="_on_Button4_pressed"]

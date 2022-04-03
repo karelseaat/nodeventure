@@ -20,17 +20,17 @@ var canvas3 = null
 var startdone = false
 
 var goodstorys = [
-	"Im qute sure that at {place} the {str} direction is a good path.",
-	"I saw people at {place} traveling on the {str} path.",
-	"My parents told me that at {place} there is a trading route on the {str} path.",
-	"I alwais go to the market via the {str} at the {place} split."
+	"I'm quite sure that at {place} the {str} direction is a good path.",
+	"I saw people traveling on the {str} path from {place}. Must be a good one!",
+	"My parents told me that there is a trading route on the {str} path at {place}.",
+	"I always go to the market via the {str} at the {place} split."
 ]
 
 var badstorys = [
-	"Dont take the {str} path at {place} it leads to nowhere !",
+	"Don't take the {str} path at {place}, because it leads to nowhere!",
 	"I saw no one return from the {str} path on the {place} split.",
-	"Adventures have traveled the {str} path at {place} but they said there is noting there.",
-	"The people that travled the {str} path at {place} didnt return with good news."
+	"Adventurers have traveled the {str} path at {place}, but they said there is noting find there.",
+	"The people that traveled the {str} path at {place} didn't return at all. Beware!"
 ]
 
 func get_files(dirpath: String, filter: String):
@@ -54,25 +54,25 @@ func get_files(dirpath: String, filter: String):
 	
 
 func getdirection(vec1, vec2):
-	var klont = rad2deg((vec1 - vec2).angle())
-	if klont < 0:
-		klont = klont + 360
+	var direction = rad2deg((vec1 - vec2).angle())
+	if direction < 0:
+		direction = direction + 360
 
-	if klont > -22.5 and klont < 22.5:
+	if direction > -22.5 and direction < 22.5:
 		return "west"
-	elif klont > 22.5 and klont < 67.5:
+	elif direction > 22.5 and direction < 67.5:
 		return "north west"
-	elif klont > 67.5 and klont < 112.5:
+	elif direction > 67.5 and direction < 112.5:
 		return "north"
-	elif klont > 112.5 and klont < 157.5:
+	elif direction > 112.5 and direction < 157.5:
 		return "north east"
-	elif klont > 157.5 and klont < 202.5:
+	elif direction > 157.5 and direction < 202.5:
 		return "east"
-	elif klont > 202.5 and klont < 247.5:
+	elif direction > 202.5 and direction < 247.5:
 		return "south east"
-	elif klont > 247.5 and klont < 292.5:
+	elif direction > 247.5 and direction < 292.5:
 		return "south"
-	elif klont > 292.5 and klont < 337.5:
+	elif direction > 292.5 and direction < 337.5:
 		return "south west"
 
 func random_choice(x, smal):
@@ -167,10 +167,10 @@ func _process(delta):
 		nodesindexes[0].setplayer(player.instance())
 		
 		nodesindexes[0].currentportrait = allports[randi() % allports.size()]
-		nodesindexes[0].directiontext = "Dear prince, the armys of darkness are aprocing.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
+		nodesindexes[0].directiontext = "Dear prince, the armies of darkness are approaching.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
 
 		nodesindexes[-1].currentportrait = allports[randi() % allports.size()]
-		nodesindexes[-1].directiontext = "Welcome to you new home nephew, you are save here.\nIt will take months befor the army of darkness will reach these parts of the land."
+		nodesindexes[-1].directiontext = "Welcome to your new home nephew, you are safe here.\nIt will take months before the army of darkness will reach these parts of the land."
 		nodesindexes[-1].home = true
 
 		cam.target = nodesindexes[0]
