@@ -1,5 +1,8 @@
 extends Node2D
 
+const cityNameGenClass = preload("res://CityNameGenerator.gd")
+var cityNameGen = cityNameGenClass.new()
+
 var neighbors : Array = []
 var allballs : Array = []
 
@@ -23,10 +26,6 @@ var vibeplay = false
 var realname = ""
 var rootscene = null
 
-var names1 = ["Green", "Rose", "Skill", "Hellen", "Clam", "Winter", "Snow", "Oak", "Kings", "Queens", "Law"]
-var names2 = ["wich" ,"view", "dam", "dune", "woods", "ford", "field", "ham", "fields", "hills", "plain"]
-var pre = ["Great", "Lesser", "New", "South", "East", "North", "West"]
-
 var textures = [preload("portrait1.png"), preload("portrait2.png")]
 var directiontext = ""
 
@@ -36,14 +35,7 @@ var colordark = Color(0.1, 0.1, 0.1, 1)
 var currentbackground = null
 var currentportrait = null
 
-func randname():
-	var choice1 = names1[randi() % names1.size()]
-	var choice2 = names2[randi() % names2.size()]
-	var choice3 = ""
-	if (randi() % 5) > 3:
-		choice3 = pre[randi() % pre.size()]
-	
-	return choice3 + " " + choice1 + choice2
+
 
 func _ready():
 	randomize()
@@ -51,7 +43,7 @@ func _ready():
 		self.position = Vector2((randi() % 20)*100, (randi() % 8)*100)
 	set_process(true)
 	rootscene = get_tree().root.get_child(0).get_child(2).get_child(0)
-	self.realname = randname()
+	self.realname = cityNameGen.randname()
 
 
 func _process(delta):
@@ -60,7 +52,6 @@ func _process(delta):
 	if self.vibeplay and not self.player:
 		self.vibeplay = false
 		$AnimationPlayer.play("stop")
-#		$AnimationPlayer.stop()
 	
 	if self.player and is_instance_valid(self.player):
 		if not self.vibeplay:
@@ -95,7 +86,7 @@ func _process(delta):
 func remove_neighbors():
 	for x in neighbors:
 		x.neighbors.erase(self)
-
+	
 	if neighbors.size() == 2 :
 		neighbors[0].neighbors.append(neighbors[1])
 		neighbors[1].neighbors.append(neighbors[0])
@@ -122,8 +113,8 @@ func draw_ball(center, radius, angle_from, angle_to, color):
 
 func draw_square(center, extra, color):
 	var posses = [Vector2(-extra, -extra)+center, Vector2(-extra, extra)+center, Vector2(extra, extra)+center, Vector2(extra, -extra)+center]
-
 	var colors = PoolColorArray([color])
+	
 	draw_polygon(posses, colors)
 
 func draw_circle_arc(center, radius, angle_from, angle_to, color, width):

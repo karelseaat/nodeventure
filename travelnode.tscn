@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Node2D.gd" type="Script" id=1]
 [ext_resource path="res://Area2D.gd" type="Script" id=2]
 [ext_resource path="res://brood.svg" type="Texture" id=3]
+[ext_resource path="res://CityNameGenerator.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 79.7504
@@ -39,7 +40,6 @@ tracks/0/keys = {
 }
 
 [node name="travelnode" type="Node2D"]
-scale = Vector2( 1.01683, 1.01683 )
 z_index = 1
 script = ExtResource( 1 )
 
@@ -67,3 +67,6 @@ __meta__ = {
 position = Vector2( 0.237407, -110.597 )
 scale = Vector2( 0.0489937, 0.0489937 )
 texture = ExtResource( 3 )
+
+[node name="CityNameGenerator" type="Node2D" parent="."]
+script = ExtResource( 4 )
