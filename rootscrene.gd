@@ -11,130 +11,139 @@ var allscore = 0
 var oldscore = 0
 var samecount = 0
 var balls = 30
-#var current
 var simulationdone = false
-
 
 var totalcenter = Vector2()
 var activeplayer = null
 var cam = null
 var astar = null
 var backgroundtextures = []
-var allports = null
+var allportraits = null
 var canvas3 = null
 var startdone = false
+
+func _ready():
+	self.cam = get_tree().get_root().get_child(0).get_child(2)
+	self.canvas3 = get_tree().get_root().get_child(0).get_child(0)
+	
+	self.allportraits = filehandler.get_files("./portraits", "png")
+	set_process(true)
+	for x in self.balls:
+		self.nodes.append(scene.instance())
+
+	self.backgroundtextures = filehandler.get_files("./landscapes", "png")
+
+	self.nodes[0].rootstart = true
+	for x in self.nodes:
+		x.allballs = self.nodes
+		self.add_child(x)
+
+	for x in self.nodes:
+		random_connect(x, 3)
+		x.currentbackground = random_from_list(self.backgroundtextures)
+
+func random_from_list(list):
+	return list[randi() % list.size()]
 
 func random_choice(x, smal):
 	var goodchoice = false
 	var choice = 0
 	while not goodchoice:
-		choice = randi() % nodes.size()
-		if nodes[choice].rootstart and nodes[choice].neighbors.size() < smal:
+		choice = randi() % self.nodes.size()
+		if self.nodes[choice].rootstart and self.nodes[choice].neighbors.size() < smal:
 			goodchoice = true
 	return choice
-	
+
+
 func random_connect(x, small):
 	var newindex = random_choice(x, small)
-	if newindex <= nodes.size()-1:
+	if newindex <= self.nodes.size()-1:
 
-		x.add_neighbor(nodes[newindex])
-		nodes[newindex].add_neighbor(x)
+		x.add_neighbor(self.nodes[newindex])
+		self.nodes[newindex].add_neighbor(x)
 		
 		if x.startatpos:
-			x.position = nodes[newindex].position + (totalcenter.normalized() * 10)
+			x.position = nodes[newindex].position + (self.totalcenter.normalized() * 10)
 			
-		nodes[newindex].rootstart = true
+		self.nodes[newindex].rootstart = true
 		x.rootstart = true
 		x.nodesettlescore = 0
-		nodes[newindex].nodesettlescore = 0 
-
-
-func _ready():
-	cam = get_tree().get_root().get_child(0).get_child(2)
-	canvas3 = get_tree().get_root().get_child(0).get_child(0)
-	
-	allports = filehandler.get_files("./portraits", "png")
-	set_process(true)
-	for x in balls:
-		nodes.append(scene.instance())
-
-	backgroundtextures = filehandler.get_files("./landscapes", "png")
-
-	nodes[0].rootstart = true
-	for x in nodes:
-		x.allballs = nodes
-		self.add_child(x)
-
-	for x in nodes:
-		random_connect(x, 3)
-		x.currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
+		self.nodes[newindex].nodesettlescore = 0 
 
 
 func _process(delta):
 	
-	for x in nodes:
-		totalcenter += x.position
+	for x in self.nodes:
+		self.totalcenter += x.position
 		
-	for x in nodes:
-		x.avgcenter = totalcenter/ nodes.size()
+	for x in self.nodes:
+		x.avgcenter = self.totalcenter/ self.nodes.size()
 	
-	nodes.shuffle()
-	
-	if nodes.size() < balls:
-		nodes.append(scene.instance())
-		nodes[-1].currentbackground = backgroundtextures[randi() % backgroundtextures.size()]
-		nodes[-1].allballs = nodes
-		nodes[-1].startatpos = true
+	self.nodes.shuffle()
+	if self.nodes.size() < self.balls:
+		reconnect_slow_ball()
+
+	for x in self.nodes:
+		self.allscore += x.nodesettlescore
 		
-		self.add_child(nodes[-1])
-		random_connect(nodes[-1], 2)
-
-	for x in nodes:
-		allscore += x.nodesettlescore
-		
-	if oldscore == allscore:
-		samecount += 1
+	if self.oldscore == self.allscore:
+		self.samecount += 1
 	
-	oldscore = allscore
-	allscore = 0
+	self.oldscore = self.allscore
+	self.allscore = 0
 
-
-	if samecount > 500 and not simulationdone and startdone:
+	if self.samecount > 500 and not self.simulationdone and self.startdone:
 		hide_loading_screen()
-		simulationdone = true
+		self.simulationdone = true
 		set_process(false)
 		var nodesindexes = longest_route()
 		var duplicate = nodesindexes.duplicate()
 
-		nodesindexes[0].setplayer(player.instance())
-		nodesindexes[0].currentportrait = allports[randi() % allports.size()]
-		nodesindexes[0].directiontext = "Dear prince, the armies of darkness are approaching.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
+		set_endnode(nodesindexes)
+		set_startnode(nodesindexes)
 
-		nodesindexes[-1].currentportrait = allports[randi() % allports.size()]
-		nodesindexes[-1].directiontext = "Welcome to your new home nephew, you are safe here.\nIt will take months before the army of darkness will reach these parts of the land."
-		nodesindexes[-1].home = true
-
-		cam.target = nodesindexes[0]
-		var totals = route_resources(duplicate)
+		self.cam.target = nodesindexes[0]
 		
-		for x in duplicate:
-			if neighborfood(x) == 0:
-				x.food = true
-			totals = route_resources(duplicate)
-
-		var lel = get_splitnode_index(nodesindexes)
-		
-		for x in lel:
-			var present = randi() % 3
-			if present > 0:
-				add_route_indicators(x, nodesindexes)
-	
+		random_food_placer(duplicate)
+		random_route_indicator(nodesindexes)
 		nodesindexes[0].clickit()
+
+func reconnect_slow_ball():
+		self.nodes.append(scene.instance())
+		self.nodes[-1].currentbackground = random_from_list(self.backgroundtextures)
+		self.nodes[-1].allballs = self.nodes
+		self.nodes[-1].startatpos = true
 		
+		self.add_child(self.nodes[-1])
+		random_connect(self.nodes[-1], 2)
+
+func set_endnode(nodesindexes):
+	nodesindexes[-1].currentportrait = self.allportraits[randi() % self.allportraits.size()]
+	nodesindexes[-1].directiontext = "Welcome to your new home nephew, you are safe here.\nIt will take months before the army of darkness will reach these parts of the land."
+	nodesindexes[-1].home = true
+
+func set_startnode(nodesindexes):
+	nodesindexes[0].setplayer(player.instance())
+	nodesindexes[0].currentportrait = self.allportraits[randi() % self.allportraits.size()]
+	nodesindexes[0].directiontext = "Dear prince, the armies of darkness are approaching.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
+
+func random_food_placer(duplicate):
+	for x in duplicate:
+		if neighborfood(x) == 0:
+			x.food = true
+
+func random_route_indicator(nodesindexes):
+	var lel = get_splitnode_index(nodesindexes)
+		
+	for x in lel:
+		var present = randi() % 3
+		if present > 0:
+			add_route_indicators(x, nodesindexes)
+
 func hide_loading_screen():
-	canvas3.get_node("backgroundsprite").hide()
-	canvas3.get_node("AnimationPlayer").stop()
-	canvas3.get_node("loadingsprite").hide()
+	self.canvas3.get_node("backgroundsprite").hide()
+	self.canvas3.get_node("AnimationPlayer").stop()
+	self.canvas3.get_node("loadingsprite").hide()
 
 func add_route_indicators(lel, nodesindexes):
 	var aStarNodes = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())
@@ -145,7 +154,7 @@ func add_route_indicators(lel, nodesindexes):
 		var direction = null
 		var place = null
 		if neighbourNode != anode:
-			anode.currentportrait = allports[randi() % allports.size()]
+			anode.currentportrait = self.allportraits[randi() % self.allportraits.size()]
 			direction =  DirectionTextGen.getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
 			place = instance_from_id(aStarNodes[0]).realname
 			anode.directiontext = DirectionTextGen.createStory(neighbourNode in nodesindexes, randi(), direction, place)
@@ -165,10 +174,6 @@ func neighborfood(node):
 		food += int(x.food)
 	return food
 
-func enough_food(listonodes, totals):
-	var size = listonodes.size()
-	return totals >= (size/2)
-
 func route_resources(listonodes):
 	var totalfood = 0
 	for x in listonodes:
@@ -177,10 +182,10 @@ func route_resources(listonodes):
 
 func longest_route():
 	astar = AStar2D.new()
-	for x in nodes:
+	for x in self.nodes:
 		astar.add_point(x.get_instance_id(), x.position)
 
-	for x in nodes:
+	for x in self.nodes:
 		for y in x.neighbors:
 			astar.connect_points(x.get_instance_id(), y.get_instance_id(), false)
 	
@@ -188,7 +193,7 @@ func longest_route():
 	var endnodes = []
 	var longestnodes = []
 	
-	for x in nodes:
+	for x in self.nodes:
 		if x.neighbors.size()  == 1:
 			endnodes.append(x)
 			
@@ -206,4 +211,4 @@ func longest_route():
 	return longestnodes
 	
 func endgame():
-	canvas3.get_node("AnimationPlayer").play("animatecontrolls")
+	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
