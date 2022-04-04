@@ -9,7 +9,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	var speed = 500
+	var speed = 800
 	if is_instance_valid(target):
 		self.offset = self.offset.move_toward( target.position, delta * speed)
 

@@ -1,6 +1,7 @@
 extends Node2D
 
 var DirectionTextGen = preload("res://DirectionTextGenerator.gd").new()
+var filehandler = preload("res://filehandler.gd").new()
 
 var scene = preload("res://travel_nodes/travelnode.tscn")
 var player = preload("res://player.tscn")
@@ -22,48 +23,6 @@ var backgroundtextures = []
 var allports = null
 var canvas3 = null
 var startdone = false
-
-func get_files(dirpath: String, filter: String):
-	var dir = Directory.new()
-	dir.open(dirpath)
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	var files = []
-
-	while (file_name != ""):
-		var path = dir.get_current_dir() + "/" + file_name
-		
-		if not dir.current_is_dir() and filter in  path.split(".")[-1]:
-			files.append(load(path))
-
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-	return files
-	
-
-func getdirection(vec1, vec2):
-	var direction = rad2deg((vec1 - vec2).angle())
-	if direction < 0:
-		direction = direction + 360
-
-	if direction > -22.5 and direction < 22.5:
-		return "west"
-	elif direction > 22.5 and direction < 67.5:
-		return "north west"
-	elif direction > 67.5 and direction < 112.5:
-		return "north"
-	elif direction > 112.5 and direction < 157.5:
-		return "north east"
-	elif direction > 157.5 and direction < 202.5:
-		return "east"
-	elif direction > 202.5 and direction < 247.5:
-		return "south east"
-	elif direction > 247.5 and direction < 292.5:
-		return "south"
-	elif direction > 292.5 and direction < 337.5:
-		return "south west"
 
 func random_choice(x, smal):
 	var goodchoice = false
@@ -94,12 +53,12 @@ func _ready():
 	cam = get_tree().get_root().get_child(0).get_child(2)
 	canvas3 = get_tree().get_root().get_child(0).get_child(0)
 	
-	allports = get_files("./portraits", "png")
+	allports = filehandler.get_files("./portraits", "png")
 	set_process(true)
 	for x in balls:
 		nodes.append(scene.instance())
 
-	backgroundtextures = get_files("./landscapes", "png")
+	backgroundtextures = filehandler.get_files("./landscapes", "png")
 
 	nodes[0].rootstart = true
 	for x in nodes:
@@ -187,7 +146,7 @@ func add_route_indicators(lel, nodesindexes):
 		var place = null
 		if neighbourNode != anode:
 			anode.currentportrait = allports[randi() % allports.size()]
-			direction =  getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
+			direction =  DirectionTextGen.getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
 			place = instance_from_id(aStarNodes[0]).realname
 			anode.directiontext = DirectionTextGen.createStory(neighbourNode in nodesindexes, randi(), direction, place)
 			return

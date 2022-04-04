@@ -5,29 +5,16 @@ var backgroundsprite = null
 var mainmenu = null
 var animationplayer = null
 var loadingsprite = null
+var filehandler = preload("res://filehandler.gd").new()
 
 func _ready():
 	animationplayer = $AnimationPlayer
-	backgroundtextures = get_files("./landscapes", "png")
+	backgroundtextures = filehandler.get_files("./landscapes", "png")
 	backgroundsprite = $backgroundsprite
 	mainmenu = $mainmenu
 	loadingsprite = $loadingsprite
 	backgroundsprite.texture = backgroundtextures[randi() % backgroundtextures.size()]
 
-func get_files(dirpath: String, filter: String):
-	var dir = Directory.new()
-	dir.open(dirpath)
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	var files = []
-
-	while (file_name != ""):
-		var path = dir.get_current_dir() + "/" + file_name
-		if not dir.current_is_dir() and filter in  path.split(".")[-1]:
-			files.append(load(path))
-		file_name = dir.get_next()
-	dir.list_dir_end()
-	return files
 
 func _on_Button_pressed():
 	mainmenu.hide()

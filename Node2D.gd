@@ -33,7 +33,6 @@ var directiontext = ""
 var currentbackground = null
 var currentportrait = null
 
-
 func _ready():
 
 	label = $Label
@@ -173,7 +172,6 @@ func draw_parts():
 	if self.visiblelevel >= 1:
 		draw_ball(offset2, 30, angle_from, angle_to, colordark)
 		draw_ball(offset2, 25, angle_from, angle_to, color)
-
 
 func setplayer(player):
 	self.player = player
