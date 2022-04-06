@@ -3,6 +3,7 @@ extends CanvasLayer
 var backgroundtextures = null
 var backgroundsprite = null
 var mainmenu = null
+var backmenu = null
 var animationplayer = null
 var loadingsprite = null
 var filehandler = preload("res://filehandler.gd").new()
@@ -12,6 +13,7 @@ func _ready():
 	backgroundtextures = filehandler.get_files("./landscapes", "png")
 	backgroundsprite = $backgroundsprite
 	mainmenu = $mainmenu
+	backmenu = $backmenu
 	loadingsprite = $loadingsprite
 	backgroundsprite.texture = backgroundtextures[randi() % backgroundtextures.size()]
 
@@ -30,4 +32,14 @@ func _on_Button4_pressed():
 	get_tree().quit()
 
 func _on_backtomain_pressed():
-	print("backtomain")
+	var cam = get_tree().root.get_child(0).get_child(2)
+	mainmenu.show()
+	backmenu.hide()
+	cam.get_child(0).set_process(true)
+	cam.get_child(0).simulationdone = false
+	cam.get_child(0).startdone = true
+	cam.get_child(0).samecount = 0
+	for x in cam.get_child(0).nodes:
+		x.queue_free()
+	cam.get_child(0).nodes = []
+	cam.get_child(0).make_balls()

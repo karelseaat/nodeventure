@@ -21,17 +21,22 @@ var backgroundtextures = []
 var allportraits = null
 var canvas3 = null
 var startdone = false
+var menu = null
 
 func _ready():
 	self.cam = get_tree().get_root().get_child(0).get_child(2)
 	self.canvas3 = get_tree().get_root().get_child(0).get_child(0)
-	
+	self.menu = get_tree().get_root().get_child(0).get_node("menulayer")
 	self.allportraits = filehandler.get_files("./portraits", "png")
-	set_process(true)
-	for x in self.balls:
-		self.nodes.append(scene.instance())
 
 	self.backgroundtextures = filehandler.get_files("./landscapes", "png")
+
+	set_process(true)
+	make_balls()
+
+func make_balls():
+	for x in self.balls:
+		self.nodes.append(scene.instance())
 
 	self.nodes[0].rootstart = true
 	for x in self.nodes:
@@ -118,13 +123,14 @@ func reconnect_slow_ball():
 		random_connect(self.nodes[-1], 2)
 
 func set_endnode(nodesindexes):
-	nodesindexes[-1].currentportrait = self.allportraits[randi() % self.allportraits.size()]
+	nodesindexes[-1].currentportrait = random_from_list(self.allportraits)
 	nodesindexes[-1].directiontext = "Welcome to your new home nephew, you are safe here.\nIt will take months before the army of darkness will reach these parts of the land."
 	nodesindexes[-1].home = true
+	
 
 func set_startnode(nodesindexes):
 	nodesindexes[0].setplayer(player.instance())
-	nodesindexes[0].currentportrait = self.allportraits[randi() % self.allportraits.size()]
+	nodesindexes[0].currentportrait = random_from_list(self.allportraits)
 	nodesindexes[0].directiontext = "Dear prince, the armies of darkness are approaching.\nYou need to flee to your uncle and aunt in the area of {place}".format({"place": nodesindexes[-1].realname})
 
 func random_food_placer(duplicate):
@@ -154,7 +160,7 @@ func add_route_indicators(lel, nodesindexes):
 		var direction = null
 		var place = null
 		if neighbourNode != anode:
-			anode.currentportrait = self.allportraits[randi() % self.allportraits.size()]
+			anode.currentportrait = random_from_list(self.allportraits)
 			direction =  DirectionTextGen.getdirection(instance_from_id(aStarNodes[0]).position, neighbourNode.position)
 			place = instance_from_id(aStarNodes[0]).realname
 			anode.directiontext = DirectionTextGen.createStory(neighbourNode in nodesindexes, randi(), direction, place)
@@ -211,4 +217,5 @@ func longest_route():
 	return longestnodes
 	
 func endgame():
-	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
+	self.menu.get_node('backmenu').show()
+#	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")

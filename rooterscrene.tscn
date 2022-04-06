@@ -41,7 +41,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MarginContainer2:modulate")
+tracks/1/path = NodePath("backmenu:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -53,7 +53,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("MarginContainer2/CenterContainer/VBoxContainer/backtomain:mouse_filter")
+tracks/2/path = NodePath("backmenu/CenterContainer/VBoxContainer/backtomain:mouse_filter")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -137,39 +137,36 @@ margin_bottom = 88.0
 custom_fonts/font = SubResource( 2 )
 text = "Quit"
 
-[node name="MarginContainer2" type="MarginContainer" parent="menulayer"]
-modulate = Color( 1, 1, 1, 0 )
+[node name="backmenu" type="MarginContainer" parent="menulayer"]
+visible = false
 margin_right = 1523.0
 margin_bottom = 760.0
-mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="menulayer/MarginContainer2"]
+[node name="CenterContainer" type="CenterContainer" parent="menulayer/backmenu"]
 margin_right = 1523.0
 margin_bottom = 760.0
-mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="menulayer/MarginContainer2/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="menulayer/backmenu/CenterContainer"]
 margin_left = 382.0
 margin_top = 319.0
 margin_right = 1141.0
 margin_bottom = 440.0
-mouse_filter = 2
+mouse_filter = 0
 
-[node name="Label" type="Label" parent="menulayer/MarginContainer2/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="menulayer/backmenu/CenterContainer/VBoxContainer"]
 margin_right = 759.0
 margin_bottom = 75.0
 custom_fonts/font = SubResource( 3 )
 text = "You made it to your uncle and aunt, you are save for now.
 you survived a perilour travvel trough the lands."
 
-[node name="backtomain" type="Button" parent="menulayer/MarginContainer2/CenterContainer/VBoxContainer"]
+[node name="backtomain" type="Button" parent="menulayer/backmenu/CenterContainer/VBoxContainer"]
 margin_top = 79.0
 margin_right = 759.0
 margin_bottom = 121.0
-mouse_filter = 2
 custom_fonts/font = SubResource( 4 )
 text = "Back to main menu!"
 
@@ -253,4 +250,4 @@ script = ExtResource( 9 )
 
 [connection signal="pressed" from="menulayer/mainmenu/CenterContainer/VBoxContainer/StartButton" to="menulayer" method="_on_Button_pressed"]
 [connection signal="pressed" from="menulayer/mainmenu/CenterContainer/VBoxContainer/QuitButton" to="menulayer" method="_on_Button4_pressed"]
-[connection signal="pressed" from="menulayer/MarginContainer2/CenterContainer/VBoxContainer/backtomain" to="menulayer" method="_on_backtomain_pressed"]
+[connection signal="pressed" from="menulayer/backmenu/CenterContainer/VBoxContainer/backtomain" to="menulayer" method="_on_backtomain_pressed"]
