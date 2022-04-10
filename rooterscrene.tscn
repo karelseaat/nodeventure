@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://rootscrene.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Camera2D.gd" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://CanvasLayer3.gd" type="Script" id=7]
 [ext_resource path="res://hourglass-36.svg" type="Texture" id=8]
 [ext_resource path="res://DirectionTextGenerator.gd" type="Script" id=9]
+[ext_resource path="res://travel_nodes/life.svg" type="Texture" id=10]
+[ext_resource path="res://travel_nodes/brood.svg" type="Texture" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -200,18 +202,44 @@ margin_right = 3036.0
 margin_bottom = 1504.0
 mouse_filter = 2
 
-[node name="LiveLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="gamelayer/ui/VBoxContainer"]
 margin_right = 3036.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LifeSprite" type="Sprite" parent="gamelayer/ui/VBoxContainer/HBoxContainer"]
+position = Vector2( 36.253, 0.09799 )
+scale = Vector2( 0.0294216, 0.0272567 )
+texture = ExtResource( 10 )
+centered = false
+
+[node name="LiveLabel" type="Label" parent="gamelayer/ui/VBoxContainer/HBoxContainer"]
 margin_bottom = 14.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
 
-[node name="FoodLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="gamelayer/ui/VBoxContainer"]
 margin_top = 18.0
 margin_right = 3036.0
 margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FoodSprite" type="Sprite" parent="gamelayer/ui/VBoxContainer/HBoxContainer2"]
+position = Vector2( 36.253, 0.09799 )
+scale = Vector2( 0.0294216, 0.0272567 )
+texture = ExtResource( 11 )
+centered = false
+
+[node name="FoodLabel" type="Label" parent="gamelayer/ui/VBoxContainer/HBoxContainer2"]
+margin_bottom = 14.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -224,6 +252,7 @@ script = ExtResource( 2 )
 layer = -1
 
 [node name="Sprite2" type="Sprite" parent="unknownlayer"]
+visible = false
 scale = Vector2( 5.78701, 2.93465 )
 texture = SubResource( 8 )
 centered = false
