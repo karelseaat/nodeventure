@@ -265,7 +265,7 @@ scale = Vector2( 5.78701, 2.93465 )
 texture = SubResource( 8 )
 centered = false
 
-[node name="SpriteIcon" type="Sprite" parent="unknownlayer"]
+[node name="Sprite" type="Sprite" parent="unknownlayer"]
 position = Vector2( 0, 100 )
 centered = false
 
