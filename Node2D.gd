@@ -213,6 +213,11 @@ func moveplayer():
 	
 		if self.player.food < 0:
 			self.player.live -= 1
+			self.player.food = 0
+			
+		if  self.player.water < 0:
+			self.player.live -= 1
+			self.player.water = 0
 		
 		if self.player.live == 0:
 			self.player.killplayer()
@@ -224,10 +229,14 @@ func clickit():
 	if is_instance_valid(currentportrait):
 		backscene.get_child(1).set_texture(currentportrait)
 		backscene.get_child(1).scale = Vector2(0.5, 0.5)
+		backscene.get_child(2).text = directiontext
 	else:
 		backscene.get_child(1).set_texture(null)
+		backscene.get_child(2).text = ""
 	
 	if home:
+		backscene.get_child(1).set_texture(null)
+		backscene.get_child(2).text = ""
 		rootscene.endgame()
-	backscene.get_child(2).text = directiontext
+
 
