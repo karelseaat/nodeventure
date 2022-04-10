@@ -107,6 +107,8 @@ func _process(delta):
 
 		set_endnode(nodesindexes)
 		set_startnode(nodesindexes)
+		
+		set_enemy(nodesindexes)
 
 		self.cam.target = nodesindexes[0]
 		
@@ -126,6 +128,9 @@ func reconnect_slow_ball():
 		
 		self.add_child(self.nodes[-1])
 		random_connect(self.nodes[-1], 2)
+
+func set_enemy(nodeindexes):
+	nodeindexes[-5].enemy = true
 
 func set_endnode(nodesindexes):
 	nodesindexes[-1].currentportrait = random_from_list(self.allportraits)
@@ -175,7 +180,6 @@ func add_route_indicators(lel, nodesindexes):
 			place = instance_from_id(aStarNodes[0]).realname
 			anode.directiontext = DirectionTextGen.createStory(neighbourNode in nodesindexes, randi(), direction, place)
 			return
-
 
 func get_splitnode_index(nodesindexes):
 	var splits = []
@@ -235,3 +239,10 @@ func longest_route():
 func endgame():
 	self.menu.get_node('backmenu').show()
 #	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
+
+func moveenemy():
+	for node in self.nodes:
+		if node.enemy:
+			node.enemy = false
+			node.random_neighbor().enemy = true
+			

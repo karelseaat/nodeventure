@@ -10,6 +10,7 @@ var water = false
 
 var home = false
 var player
+var enemy = null
 var discovered = true
 var center = Vector2(0,0)
 var avgcenter
@@ -72,12 +73,14 @@ func _process(delta):
 			if x.visiblelevel < 1:
 				x.visiblelevel = 1
 
-	for x in allballs:
-		var distance = self.position.distance_to(x.position)
-		if distance < 250:
-			position -= position.direction_to(x.position) * (distance + speed)  * delta
-
 	if simulate:
+
+		for x in allballs:
+			var distance = self.position.distance_to(x.position)
+			if distance < 250:
+				position -= position.direction_to(x.position) * (distance + speed)  * delta
+
+
 		for x in neighbors:
 			var distance = self.position.distance_to(x.position)
 			if distance > 350:
@@ -107,6 +110,13 @@ func remove_neighbors():
 
 func add_neighbor(node):
 	neighbors.append(node)
+
+func random_from_list(list):
+	return list[randi() % list.size()]
+
+func random_neighbor():
+	return self.random_from_list(self.neighbors)
+	
 
 func draw_ball(center, radius, angle_from, angle_to, color):
 	var nb_points = 32
@@ -144,7 +154,11 @@ func _draw():
 		draw_connections()
 		draw_parts()
 		draw_player()
+		draw_enemy()
 
+func draw_enemy():
+	if enemy:
+		draw_ball(Vector2(0,0), 50, 0, 360, Color(255,0,0))
 
 func draw_player():
 	if player and player.dead == false:
@@ -225,6 +239,8 @@ func moveplayer():
 func clickit():
 	backscene.get_child(0).set_texture(currentbackground)
 	backscene.get_child(0).scale = Vector2(1, 1)
+	
+	rootscene.moveenemy()
 	
 	if is_instance_valid(currentportrait):
 		backscene.get_child(1).set_texture(currentportrait)
