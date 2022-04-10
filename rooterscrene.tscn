@@ -206,10 +206,17 @@ margin_bottom = 14.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 
-[node name="FoodLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
+[node name="WaterLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
 margin_top = 18.0
 margin_right = 3036.0
 margin_bottom = 32.0
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+
+[node name="FoodLabel" type="Label" parent="gamelayer/ui/VBoxContainer"]
+margin_top = 36.0
+margin_right = 3036.0
+margin_bottom = 50.0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 

@@ -110,6 +110,7 @@ func _process(delta):
 		self.cam.target = nodesindexes[0]
 		
 		random_food_placer(duplicate)
+		random_water_placer(duplicate)
 		random_route_indicator(nodesindexes)
 		nodesindexes[0].clickit()
 
@@ -137,6 +138,11 @@ func random_food_placer(duplicate):
 	for x in duplicate:
 		if neighborfood(x) == 0:
 			x.food = true
+
+func random_water_placer(duplicate):
+	for x in duplicate:
+		if neighborfood(x) == 0:
+			x.water = true
 
 func random_route_indicator(nodesindexes):
 	var lel = get_splitnode_index(nodesindexes)
