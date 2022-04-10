@@ -211,6 +211,11 @@ func moveplayer():
 	
 		if self.player.food < 0:
 			self.player.live -= 1
+			self.player.food = 0
+			
+		if  self.player.water < 0:
+			self.player.live -= 1
+			self.player.water = 0
 		
 		if self.player.live == 0:
 			self.player.killplayer()

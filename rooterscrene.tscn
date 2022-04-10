@@ -291,16 +291,16 @@ scale = Vector2( 5.78701, 2.93465 )
 texture = SubResource( 8 )
 centered = false
 
-[node name="Sprite" type="Sprite" parent="unknownlayer"]
-position = Vector2( 0, 100 )
+[node name="Portrait" type="Sprite" parent="unknownlayer"]
+position = Vector2( 0, 150 )
 centered = false
 
 [node name="Label" type="Label" parent="unknownlayer"]
 anchor_right = 3.559
 anchor_bottom = 3.753
-margin_top = 272.378
-margin_right = -1788.21
-margin_bottom = -1905.16
+margin_top = 290.0
+margin_right = -10429.1
+margin_bottom = -4985.51
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
