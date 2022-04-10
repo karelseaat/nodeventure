@@ -188,9 +188,8 @@ anims/stopplay = SubResource( 7 )
 [node name="gamelayer" type="CanvasLayer" parent="."]
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="gamelayer"]
-
 [node name="ui" type="MarginContainer" parent="gamelayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
