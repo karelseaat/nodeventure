@@ -97,10 +97,11 @@ func _process(delta):
 	self.oldscore = self.allscore
 	self.allscore = 0
 
-	if self.samecount > 500 and not self.simulationdone and self.startdone:
+	if self.samecount > 100 and not self.simulationdone and self.startdone:
 		hide_loading_screen()
 		self.simulationdone = true
 		set_process(false)
+
 		var nodesindexes = longest_route()
 		var duplicate = nodesindexes.duplicate()
 
@@ -109,10 +110,13 @@ func _process(delta):
 
 		self.cam.target = nodesindexes[0]
 		
-		random_food_placer(duplicate)
-		random_water_placer(duplicate)
+		random_food_placer(self.nodes)
+		random_water_placer(nodesindexes)
 		random_route_indicator(nodesindexes)
 		nodesindexes[0].clickit()
+		
+		for node in self.nodes:
+			node.simulate = false
 
 func reconnect_slow_ball():
 		self.nodes.append(scene.instance())
@@ -136,12 +140,12 @@ func set_startnode(nodesindexes):
 
 func random_food_placer(duplicate):
 	for x in duplicate:
-		if neighborfood(x) == 0:
+		if  randi() % 2 > 0:
 			x.food = true
 
 func random_water_placer(duplicate):
 	for x in duplicate:
-		if neighborfood(x) == 0:
+		if neighborwater(x) == 0:
 			x.water = true
 
 func random_route_indicator(nodesindexes):
@@ -185,6 +189,12 @@ func neighborfood(node):
 	for x in node.neighbors:
 		food += int(x.food)
 	return food
+
+func neighborwater(node):
+	var water = 0
+	for x in node.neighbors:
+		water += int(x.water)
+	return water
 
 func route_resources(listonodes):
 	var totalfood = 0

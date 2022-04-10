@@ -26,6 +26,7 @@ var label = null
 var foodsprite = null
 var watersprite = null
 var animationplayer = null
+var simulate = true
 
 var color = Color(0.4, 0.4, 0.4, 1)
 var somecolor = Color(0.9, 0.9, 0.9, 1)
@@ -76,18 +77,19 @@ func _process(delta):
 		if distance < 250:
 			position -= position.direction_to(x.position) * (distance + speed)  * delta
 
-	for x in neighbors:
-		var distance = self.position.distance_to(x.position)
-		if distance > 350:
-			nodesettlescore += 1
+	if simulate:
+		for x in neighbors:
+			var distance = self.position.distance_to(x.position)
+			if distance > 350:
+				nodesettlescore += 1
 
-			position = position.move_toward(x.position, delta * (distance + speed))
+				position = position.move_toward(x.position, delta * (distance + speed))
 
-	if nodesettlescore > 23 and neighbors.size() <= 2:
+		if nodesettlescore > 23 and neighbors.size() <= 2:
 
-		remove_neighbors()
-		allballs.erase(self)
-		queue_free()
+			remove_neighbors()
+			allballs.erase(self)
+			queue_free()
 	update()
 
 func remove_neighbors():
