@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Area2D.gd" type="Script" id=1]
 [ext_resource path="res://travel_nodes/CityNameGenerator.gd" type="Script" id=2]
 [ext_resource path="res://travel_nodes/brood.svg" type="Texture" id=3]
 [ext_resource path="res://Node2D.gd" type="Script" id=4]
 [ext_resource path="res://travel_nodes/druppel.png" type="Texture" id=5]
+[ext_resource path="res://fonts/travelnode_font.tres" type="DynamicFont" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 79.7504
@@ -56,10 +57,16 @@ anims/vibe = SubResource( 3 )
 
 [node name="Label" type="Label" parent="."]
 anchor_bottom = 0.229
-margin_left = -40.0
+margin_left = -75.0
 margin_top = 100.0
-margin_right = 40.0
-margin_bottom = 14.0
+margin_right = 75.0
+margin_bottom = 127.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
