@@ -6,6 +6,7 @@ var neighbors : Array = []
 var allballs : Array = []
 
 var food = false
+var water = false
 
 var home = false
 var player
@@ -22,7 +23,8 @@ var realname = ""
 var rootscene = null
 var backscene = null
 var label = null
-var sprite = null
+var foodsprite = null
+var watersprite = null
 var animationplayer = null
 
 var color = Color(0.4, 0.4, 0.4, 1)
@@ -36,7 +38,11 @@ var currentportrait = null
 func _ready():
 
 	label = $Label
-	sprite = $Sprite
+	foodsprite = $Sprite
+	foodsprite.position = Vector2(-50, -100)
+	watersprite =  $Spritetwee
+	watersprite.position = Vector2(50, -100)
+	
 	animationplayer = $AnimationPlayer
 	backscene = get_tree().root.get_child(0).get_child(3)
 	randomize()
@@ -48,12 +54,13 @@ func _ready():
 
 
 func _process(delta):
+	pass
 	var speed = 5
-	
+
 	if self.nodepulseplay and not self.player:
 		self.nodepulseplay = false
 		animationplayer.play("stop")
-	
+
 	if self.player and is_instance_valid(self.player):
 		if not self.nodepulseplay:
 			self.nodepulseplay = true
@@ -165,13 +172,22 @@ func draw_parts():
 		draw_ball(Vector2(0,0), radius, angle_from, angle_to, color)
 
 	if self.visiblelevel == 2 and self.food:
-		sprite.visible = true
+		foodsprite.visible = true
 	else:
-		sprite.visible = false
+		foodsprite.visible = false
+
+	if self.visiblelevel == 2 and self.water:
+		watersprite.visible = true
+	else:
+		watersprite.visible = false
 #
+
 	if self.visiblelevel >= 1:
-		draw_ball(offset2, 30, angle_from, angle_to, colordark)
-		draw_ball(offset2, 25, angle_from, angle_to, color)
+		draw_ball(offset1, 30, angle_from, angle_to, colordark)
+		draw_ball(offset1, 25, angle_from, angle_to, color)
+		
+		draw_ball(offset3, 30, angle_from, angle_to, colordark)
+		draw_ball(offset3, 25, angle_from, angle_to, color)
 
 func setplayer(player):
 	self.player = player
@@ -187,6 +203,11 @@ func moveplayer():
 			self.player.food = self.player.maxfood
 		else:
 			self.player.food -= 1
+	
+		if self.water and self.player.water <= self.player.maxwater:
+			self.player.water = self.player.maxwater
+		else:
+			self.player.water -= 1
 	
 		if self.player.food < 0:
 			self.player.live -= 1

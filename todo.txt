@@ -1,3 +1,8 @@
-leven en voedsel als hartjes en brood
-snelhied van bolletjes genereren moet beter
-water weer toevoegen !
+leven en voedsel als hartjes en brood (done)
+water weer toevoegen ! (done)
+
+snelheid van bolletjes genereren moet beter
+roming enemy en portretten die ervoor waarschuwen als je in de buurt komt !
+Mag duidelijker zijn dat je dood bent !
+Intro text verduidelijken
+Het mag duidelijker zijn wat het doel is !
