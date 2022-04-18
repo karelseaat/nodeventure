@@ -108,6 +108,9 @@ func _process(delta):
 		set_endnode(nodesindexes)
 		set_startnode(nodesindexes)
 		
+		var enemyroam = get_splitnode_index(nodesindexes)[-1]
+		print(enemyroam.neighbors)
+
 		set_enemy(nodesindexes)
 
 		self.cam.target = nodesindexes[0]
@@ -145,7 +148,7 @@ func set_startnode(nodesindexes):
 
 func random_food_placer(duplicate):
 	for x in duplicate:
-		if  randi() % 2 > 0:
+		if  randi() % 3 > 0:
 			x.food = true
 
 func random_water_placer(duplicate):
@@ -165,6 +168,10 @@ func hide_loading_screen():
 	self.canvas3.get_node("backgroundsprite").hide()
 	self.canvas3.get_node("AnimationPlayer").stop()
 	self.canvas3.get_node("loadingsprite").hide()
+#
+#func get_a_split(nodesindexes):
+#	for node in nodesindexes:
+#		if node.neighbors
 
 func add_route_indicators(lel, nodesindexes):
 	var aStarNodes = astar.get_id_path(lel.get_instance_id(), nodesindexes[0].get_instance_id())

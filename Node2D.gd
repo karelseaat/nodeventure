@@ -153,11 +153,12 @@ func _draw():
 	if self.discovered:
 		draw_connections()
 		draw_parts()
-		draw_player()
 		draw_enemy()
+		draw_player()
+
 
 func draw_enemy():
-	if enemy:
+	if enemy and self.visiblelevel >= 1:
 		draw_ball(Vector2(0,0), 50, 0, 360, Color(255,0,0))
 
 func draw_player():
