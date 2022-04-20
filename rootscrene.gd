@@ -244,6 +244,8 @@ func longest_route():
 	return longestnodes
 	
 func endgame():
+	var endSceneTexture = filehandler.get_files("./end-scenes", "png")
+	self.menu.get_node('backgroundsprite').texture = endSceneTexture[0]
 	self.menu.get_node('backmenu').show()
 #	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
 
