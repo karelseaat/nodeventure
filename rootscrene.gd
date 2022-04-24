@@ -34,11 +34,12 @@ func _ready():
 	make_balls()
 
 func make_balls():
+	# Randomize number of balls
+	numberOfNodes = numberOfNodes + rand_range(1, 25)
+	
 	# Make new travel node instances
 	for x in self.numberOfNodes:
 		var nodeInstance = scene.instance()
-		nodeInstance.position.x = randi()
-		nodeInstance.position.y = randi()
 		nodeInstance.currentbackground = random_from_list(self.backgroundtextures)
 		self.nodes.append(nodeInstance)
 
@@ -111,7 +112,7 @@ func _process(delta):
 		set_startnode(nodesindexes)
 		
 		var enemyroam = get_splitnode_index(nodesindexes)[-1]
-		print(enemyroam.neighbors)
+
 
 		set_enemy(nodesindexes)
 
