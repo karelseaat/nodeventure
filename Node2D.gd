@@ -8,7 +8,7 @@ var allballs : Array = []
 var food = false
 var water = false
 
-var home = false
+var isEndNode = false
 var player
 var enemy = null
 var discovered = true
@@ -251,7 +251,7 @@ func clickit():
 		backscene.get_child(1).set_texture(null)
 		backscene.get_child(2).text = ""
 	
-	if home:
+	if isEndNode:
 		backscene.get_child(1).set_texture(null)
 		backscene.get_child(2).text = ""
 		rootscene.endgame()

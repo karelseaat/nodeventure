@@ -10,7 +10,7 @@ var nodes = []
 var allscore = 0
 var oldscore = 0
 var samecount = 0
-var balls = 30
+var numberOfNodes = 10
 var simulationdone = false
 
 var totalcenter = Vector2()
@@ -28,15 +28,19 @@ func _ready():
 	self.canvas3 = get_tree().get_root().get_child(0).get_child(0)
 	self.menu = get_tree().get_root().get_child(0).get_node("menulayer")
 	self.allportraits = filehandler.get_files("./portraits", "png")
-
 	self.backgroundtextures = filehandler.get_files("./landscapes", "png")
 
 	set_process(true)
 	make_balls()
 
 func make_balls():
-	for x in self.balls:
-		self.nodes.append(scene.instance())
+	# Make new travel node instances
+	for x in self.numberOfNodes:
+		var nodeInstance = scene.instance()
+		nodeInstance.position.x = randi()
+		nodeInstance.position.y = randi()
+		nodeInstance.currentbackground = random_from_list(self.backgroundtextures)
+		self.nodes.append(nodeInstance)
 
 	self.nodes[0].rootstart = true
 	for x in self.nodes:
@@ -45,7 +49,6 @@ func make_balls():
 
 	for x in self.nodes:
 		random_connect(x, 3)
-		x.currentbackground = random_from_list(self.backgroundtextures)
 
 func random_from_list(list):
 	return list[randi() % list.size()]
@@ -77,7 +80,6 @@ func random_connect(x, small):
 
 
 func _process(delta):
-	
 	for x in self.nodes:
 		self.totalcenter += x.position
 		
@@ -85,7 +87,7 @@ func _process(delta):
 		x.avgcenter = self.totalcenter/ self.nodes.size()
 	
 	self.nodes.shuffle()
-	if self.nodes.size() < self.balls:
+	if self.nodes.size() < self.numberOfNodes:
 		reconnect_slow_ball()
 
 	for x in self.nodes:
@@ -136,9 +138,11 @@ func set_enemy(nodeindexes):
 	nodeindexes[-5].enemy = true
 
 func set_endnode(nodesindexes):
+	var endSceneTexture = filehandler.get_files("./end-scenes", "png")
 	nodesindexes[-1].currentportrait = random_from_list(self.allportraits)
+	nodesindexes[-1].currentbackground = endSceneTexture[0]
 	nodesindexes[-1].directiontext = "Welcome to your new home nephew, you are safe here.\nIt will take months before the army of darkness will reach these parts of the land."
-	nodesindexes[-1].home = true
+	nodesindexes[-1].isEndNode = true
 	
 
 func set_startnode(nodesindexes):
@@ -244,10 +248,7 @@ func longest_route():
 	return longestnodes
 	
 func endgame():
-	var endSceneTexture = filehandler.get_files("./end-scenes", "png")
-	self.menu.get_node('backgroundsprite').texture = endSceneTexture[0]
 	self.menu.get_node('backmenu').show()
-#	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
 
 func moveenemy():
 	for node in self.nodes:
