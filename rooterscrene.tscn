@@ -7,7 +7,7 @@
 [ext_resource path="res://fonts/Florida Project Phase One.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://fonts/Florida Project Phase One.otf" type="DynamicFontData" id=6]
 [ext_resource path="res://CanvasLayer3.gd" type="Script" id=7]
-[ext_resource path="res://hourglass-36.svg" type="Texture" id=8]
+[ext_resource path="res://textures/hourglass-36.svg" type="Texture" id=8]
 [ext_resource path="res://DirectionTextGenerator.gd" type="Script" id=9]
 [ext_resource path="res://travel_nodes/life.svg" type="Texture" id=10]
 [ext_resource path="res://travel_nodes/brood.svg" type="Texture" id=11]

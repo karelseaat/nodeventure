@@ -8,7 +8,7 @@ var allballs : Array = []
 var food = false
 var water = false
 
-var home = false
+var isEndNode = false
 var player
 var enemy = null
 var discovered = true
@@ -44,6 +44,8 @@ func _ready():
 	foodsprite.position = Vector2(-50, -100)
 	watersprite =  $Spritetwee
 	watersprite.position = Vector2(50, -100)
+	self.position.x = rand_range(0, 2400)
+	self.position.y = rand_range(0, 2400)
 	
 	animationplayer = $AnimationPlayer
 	backscene = get_tree().root.get_child(0).get_child(3)
@@ -77,15 +79,14 @@ func _process(delta):
 
 		for x in allballs:
 			var distance = self.position.distance_to(x.position)
-			if distance < 250:
+			if distance < 280:
 				position -= position.direction_to(x.position) * (distance + speed)  * delta
 
 
 		for x in neighbors:
 			var distance = self.position.distance_to(x.position)
-			if distance > 350:
+			if distance > 450:
 				nodesettlescore += 1
-
 				position = position.move_toward(x.position, delta * (distance + speed))
 
 		if nodesettlescore > 23 and neighbors.size() <= 2:
@@ -260,7 +261,7 @@ func clickit():
 		backscene.get_child(1).set_texture(null)
 		backscene.get_child(2).text = ""
 	
-	if home:
+	if isEndNode:
 		backscene.get_child(1).set_texture(null)
 		backscene.get_child(2).text = ""
 		rootscene.endgame()
