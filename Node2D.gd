@@ -211,7 +211,7 @@ func setplayer(player):
 
 func moveplayer():
 	for x in neighbors:
-		if x.player and x.player.dead == false:
+		if x.player and x != self:
 			self.player = x.player
 			x.player = null
 
@@ -240,8 +240,17 @@ func moveplayer():
 func clickit():
 	backscene.get_child(0).set_texture(currentbackground)
 	backscene.get_child(0).scale = Vector2(1, 1)
-	
-	rootscene.moveenemy()
+	var tempnode = null
+	for node in allballs:
+
+		if is_instance_valid(node.enemy):
+
+			while tempnode == null or tempnode == self:
+				tempnode = node.enemy.moveenemy()
+			
+				var tempenemy = node.enemy
+				tempnode.enemy = tempenemy
+				node.enemy = null
 	
 	if is_instance_valid(currentportrait):
 		backscene.get_child(1).set_texture(currentportrait)

@@ -5,6 +5,7 @@ var filehandler = preload("res://filehandler.gd").new()
 
 var scene = preload("res://travel_nodes/travelnode.tscn")
 var player = preload("res://player.tscn")
+var enemy = preload("res://Enemy.tscn")
 
 var nodes = []
 var allscore = 0
@@ -22,6 +23,7 @@ var allportraits = null
 var canvas3 = null
 var startdone = false
 var menu = null
+var realenemy = null
 
 func _ready():
 	self.cam = get_tree().get_root().get_child(0).get_child(2)
@@ -108,10 +110,9 @@ func _process(delta):
 		set_endnode(nodesindexes)
 		set_startnode(nodesindexes)
 		
-		var enemyroam = get_splitnode_index(nodesindexes)[-1]
-		print(enemyroam.neighbors)
-
-		set_enemy(nodesindexes)
+		var reverseindexes = nodesindexes.duplicate()
+		reverseindexes.invert()
+		set_enemy(reverseindexes.slice(0, 5))
 
 		self.cam.target = nodesindexes[0]
 		
@@ -133,7 +134,10 @@ func reconnect_slow_ball():
 		random_connect(self.nodes[-1], 2)
 
 func set_enemy(nodeindexes):
-	nodeindexes[-5].enemy = true
+	var tempenm = enemy.instance()
+	tempenm.allowednodes = nodeindexes
+	nodeindexes[0].enemy = tempenm
+
 
 func set_endnode(nodesindexes):
 	nodesindexes[-1].currentportrait = random_from_list(self.allportraits)
@@ -247,9 +251,9 @@ func endgame():
 	self.menu.get_node('backmenu').show()
 #	self.canvas3.get_node("AnimationPlayer").play("animatecontrolls")
 
-func moveenemy():
-	for node in self.nodes:
-		if node.enemy:
-			node.enemy = false
-			node.random_neighbor().enemy = true
+#func moveenemy():
+#	for node in self.nodes:
+#		if node.enemy:
+#			node.enemy = false
+#			node.random_neighbor().enemy = true
 			
